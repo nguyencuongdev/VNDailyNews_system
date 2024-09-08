@@ -1,0 +1,473 @@
+mixin sidebar(path,role) 
+    aside(class='sidebar pb-3')
+                //- Sidebar item news management
+                div(class="list-group sidebar-item")
+                    button(
+                        class="sidbar-btn bg-transparent text-left px-4 d-flex text-white",
+                        type="button",
+                        data-toggle="collapse",
+                        data-target="#baidang",
+                        aria-expanded="false",
+                        aria-controls="baidang"
+                    )
+                        div(class="sidebar-btn-group")
+                            span(class="mr-3")
+                                svg(xmlns="http://www.w3.org/2000/svg",
+                                viewBox="0 0 24 24",
+                                width="24",height="24",
+                                class="main-grid-item-icon",
+                                fill="none",
+                                stroke="currentColor",
+                                stroke-linecap="round",
+                                stroke-linejoin="round",
+                                stroke-width="2")
+                                    path(d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z")
+                                    polylin( points="14 2 14 8 20 8")
+                                    line(x1="16",x2="8",y1="13",y2="13")
+                                    line(x1="16",x2="8",y1="17",y2="17")
+                                    polyline(points="10 9 9 9 8 9")
+                            | Bài đăng
+                        span(class="d-inline-block")
+                            svg(xmlns="http://www.w3.org/2000/svg",
+                             viewBox="0 0 24 24",
+                             width="24",
+                             height="24",
+                             class="main-grid-item-icon",
+                             fill="none",
+                             stroke="currentColor",
+                             stroke-linecap="round",
+                             stroke-linejoin="round",
+                             stroke-width="1.5")
+                                polyline(points="6 9 12 15 18 9")
+                    div(
+                        id="baidang",
+                        class="collapse sidbar-entry bg-transparent",
+                        class={show: path === '/news' || path === '/news/create' || path === '/news/edit/'}
+                    )
+                        a(
+                            href="/news",
+                            class="list-group-item pr-4 pl-5 py-2 border-0 list-group-item-action bg-transparent text-white sidbar-entry-item sidebar-btn mb-1",
+                            class={active: path === '/news'}
+                        )
+                            div(class="sidebar-btn-group")
+                                span(class="d-inline-flex mr-3")
+                                    svg(xmlns="http://www.w3.org/2000/svg",
+                                        viewBox="0 0 24 24",
+                                        width="24" height="24",
+                                        class="main-grid-item-icon",
+                                        fill="none",stroke="currentColor",
+                                        stroke-linecap="round",
+                                        stroke-linejoin="round",
+                                        stroke-width="2")
+                                            line(x1="8",x2="21",y1="6",y2="6")
+                                            line(x1="8",x2="21",y1="12",y2="12")
+                                            line(x1="8",x2="21",y1="18",y2="18")
+                                            line(x1="3",x2="3.01",y1="6",y2="6")
+                                            line(x1="3",x2="3.01",y1="12",y2="12")
+                                            line(x1="3",x2="3.01",y1="18",y2="18")
+                                | Danh sách
+                        a(
+                            href="/news/create",
+                            class="list-group-item pr-4 pl-5 border-0 list-group-item-action bg-transparent text-white py-2 sidbar-entry-item sidebar-btn mb-1",
+                            class={active: path === '/news/create'}
+                        )
+                            div(class="sidebar-btn-group")
+                                span(class="mr-3")
+                                    svg(xmlns="http://www.w3.org/2000/svg",
+                                    viewBox="0 0 24 24" width="24",
+                                    height="24",
+                                    class="main-grid-item-icon" fill="none",
+                                    stroke="currentColor",
+                                    stroke-linecap="round",
+                                    stroke-linejoin="round",
+                                    stroke-width="2")
+                                        rect(height="18",rx="2",ry="2",width="18",x="3",y="3")
+                                        line(x1="12",x2="12",y1="8",y2="16")
+                                        line(x1="8",x2="16",y1="12",y2="12")
+                                | Thêm mới
+                if [1,2].includes(role)
+                    //- Sidebar Item content management
+                    div(class="list-group sidebar-item")
+                        button(
+                            class="sidbar-btn bg-transparent text-left px-4 d-flex text-white",
+                            type="button",
+                            data-toggle="collapse",
+                            data-target="#danhmuc",
+                            aria-expanded="false",
+                            aria-controls="danhmuc"
+                        )
+                            div(class="sidebar-btn-group")
+                                span(class="mr-3")
+                                    svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2")
+                                        polyline(points="21 8 21 21 3 21 3 8")
+                                        rect(height="5" width="22" x="1" y="3")
+                                        line(x1="10" x2="14" y1="12" y2="12")
+                                | Danh mục
+                            span(class="d-inline-block")
+                                svg(xmlns="http://www.w3.org/2000/svg",
+                                viewBox="0 0 24 24",
+                                width="24",
+                                height="24",
+                                class="main-grid-item-icon",
+                                fill="none",
+                                stroke="currentColor",
+                                stroke-linecap="round",
+                                stroke-linejoin="round",
+                                stroke-width="1.5")
+                                    polyline(points="6 9 12 15 18 9")
+                        div(
+                            class="collapse sidbar-entry bg-transparent mt-2",id="danhmuc"
+                            class={
+                                show: path === '/categorys' || path==='/categorys/create'
+                            }
+                        )
+                            //- TH người dùng ở trang khác trang danh sách danh mục bấm về trang danh sách danh mục thì sẽ reser về trrang đầu tiên trong trang danh sách
+                            //- TH người dùng đang chỉnh sửa hoặc tạo mới danh mục khi bấm về trang danh sách danh mục sẽ giữ nguyên trang trước đó mà người dùng truy vập. 
+                            a(
+                                href=(path === '/categorys' ? `/categorys?p=${p}&fposc=${fposc}&lposc=${lposc}` : 
+                                `/categorys?p=0&fposc=0&lposc=3`),
+                                class="list-group-item pr-4 pl-5  py-2 border-0 list-group-item-action bg-transparent  text-white sidbar-entry-item sidebar-btn mb-1",
+                                class={active: path === '/categorys'}
+                            )
+                                div(class="sidebar-btn-group")
+                                    span(class="d-inline-flex mr-3")
+                                        svg(xmlns="http://www.w3.org/2000/svg",
+                                            viewBox="0 0 24 24",
+                                        width="24" height="24",
+                                        class="main-grid-item-icon",
+                                        fill="none",stroke="currentColor",
+                                        stroke-linecap="round",
+                                        stroke-linejoin="round",
+                                        stroke-width="2")
+                                            line(x1="8",x2="21",y1="6",y2="6")
+                                            line(x1="8",x2="21",y1="12",y2="12")
+                                            line(x1="8",x2="21",y1="18",y2="18")
+                                            line(x1="3",x2="3.01",y1="6",y2="6")
+                                            line(x1="3",x2="3.01",y1="12",y2="12")
+                                            line(x1="3",x2="3.01",y1="18",y2="18")
+                                    | Danh sách
+                            a(
+                                href="/categorys/create",
+                                class="list-group-item pr-4 pl-5 py-2 border-0 list-group-item-action bg-transparent  text-white sidbar-entry-item sidebar-btn mb-1",
+                                class={active: path === '/categorys/create'}
+                            )
+                                div(class="sidebar-btn-group")
+                                    span(class="mr-3")
+                                        svg(xmlns="http://www.w3.org/2000/svg",
+                                        viewBox="0 0 24 24" width="24",
+                                        height="24",
+                                        class="main-grid-item-icon" fill="none",
+                                        stroke="currentColor",
+                                        stroke-linecap="round" stroke-linejoin="round",
+                                        stroke-width="2")
+                                            rect(height="18",rx="2",ry="2",width="18",x="3",y="3")
+                                            line(x1="12",x2="12",y1="8",y2="16")
+                                            line(x1="8",x2="16",y1="12",y2="12")
+                                    | Thêm mới
+                        button(
+                            class="sidbar-btn bg-transparent text-left px-4 d-flex text-white",
+                            type="button",
+                            data-toggle="collapse",
+                            data-target="#theloai",
+                            aria-expanded="false",
+                            aria-controls="theloai"
+                        )
+                            div(class="sidebar-btn-group")
+                                span(class="mr-3")
+                                    svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2")
+                                            rect(height="7" width="7" x="3" y="3")
+                                            rect(height="7" width="7" x="14" y="3")
+                                            rect(height="7" width="7" x="14" y="14")
+                                            rect(height="7" width="7" x="3" y="14")
+                                | Thể loại
+                            span(class="d-inline-block")
+                                svg(xmlns="http://www.w3.org/2000/svg",
+                                viewBox="0 0 24 24",
+                                width="24",
+                                height="24",
+                                class="main-grid-item-icon",
+                                fill="none",
+                                stroke="currentColor",
+                                stroke-linecap="round",
+                                stroke-linejoin="round",
+                                stroke-width="1.5")
+                                    polyline(points="6 9 12 15 18 9")
+                        div(
+                            class="collapse sidbar-entry bg-transparent mt-2",id="theloai"
+                            class={
+                                show: path === '/tags' || path==='/tags/create' ||  path==='/tags/edit'
+                            }
+                        )
+                            //- TH người dùng ở trang khác trang danh sách danh mục bấm về trang danh sách danh mục thì sẽ reser về trrang đầu tiên trong trang danh sách
+                            //- TH người dùng đang chỉnh sửa hoặc tạo mới danh mục khi bấm về trang danh sách danh mục sẽ giữ nguyên trang trước đó mà người dùng truy vập. 
+                            a(
+                                 href=(path === '/tags' ? `/tags?p=${p}&fposc=${fposc}&lposc=${lposc}` : 
+                                `/tags?p=0&fposc=0&lposc=3`),
+                                class="list-group-item pr-4 pl-5  py-2 border-0 list-group-item-action bg-transparent  text-white sidbar-entry-item sidebar-btn mb-1",
+                                class={active: path === '/tags'}
+                            )
+                                div(class="sidebar-btn-group")
+                                    span(class="d-inline-flex mr-3")
+                                        svg(xmlns="http://www.w3.org/2000/svg",
+                                            viewBox="0 0 24 24",
+                                        width="24" height="24",
+                                        class="main-grid-item-icon",
+                                        fill="none",stroke="currentColor",
+                                        stroke-linecap="round",
+                                        stroke-linejoin="round",
+                                        stroke-width="2")
+                                            line(x1="8",x2="21",y1="6",y2="6")
+                                            line(x1="8",x2="21",y1="12",y2="12")
+                                            line(x1="8",x2="21",y1="18",y2="18")
+                                            line(x1="3",x2="3.01",y1="6",y2="6")
+                                            line(x1="3",x2="3.01",y1="12",y2="12")
+                                            line(x1="3",x2="3.01",y1="18",y2="18")
+                                    | Danh sách
+                            a(
+                                href="/tags/create",
+                                class="list-group-item pr-4 pl-5 py-2 border-0 list-group-item-action bg-transparent  text-white sidbar-entry-item sidebar-btn mb-1",
+                                class={active: path === '/tags/create'}
+                            )
+                                div(class="sidebar-btn-group")
+                                    span(class="mr-3")
+                                        svg(xmlns="http://www.w3.org/2000/svg",
+                                        viewBox="0 0 24 24" width="24",
+                                        height="24",
+                                        class="main-grid-item-icon" fill="none",
+                                        stroke="currentColor",
+                                        stroke-linecap="round" stroke-linejoin="round",
+                                        stroke-width="2")
+                                            rect(height="18",rx="2",ry="2",width="18",x="3",y="3")
+                                            line(x1="12",x2="12",y1="8",y2="16")
+                                            line(x1="8",x2="16",y1="12",y2="12")
+                                    | Thêm mới
+                    if role === 1
+                        div.dropdown-divider
+                        //- Sidebar item user management
+                        div(class="list-group sidebar-item")
+                            button(
+                                class="sidbar-btn bg-transparent text-left px-4 d-flex text-white",
+                                type="button",
+                                data-toggle="collapse",
+                                data-target="#nguoidung",
+                                aria-expanded="false",
+                                aria-controls="nguoidung"
+                            )
+                                div(class="sidebar-btn-group")
+                                    span(class="mr-3")
+                                        svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2")
+                                            path(d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2")
+                                            circle(cx="9" cy="7" r="4")
+                                            path(d="M23 21v-2a4 4 0 0 0-3-3.87")
+                                            path(d="M16 3.13a4 4 0 0 1 0 7.75")
+                                    | Người dùng
+                                span(class="d-inline-block")
+                                    svg(xmlns="http://www.w3.org/2000/svg",
+                                    viewBox="0 0 24 24",
+                                    width="24",
+                                    height="24",
+                                    class="main-grid-item-icon",
+                                    fill="none",
+                                    stroke="currentColor",
+                                    stroke-linecap="round",
+                                    stroke-linejoin="round",
+                                    stroke-width="1.5")
+                                        polyline(points="6 9 12 15 18 9")
+                            div(
+                                id="nguoidung",
+                                class="collapse sidbar-entry bg-transparent",
+                                class={show: path === '/users' || path === '/users/create'}
+                            )
+                                a(
+                                    href=(path === '/users' ? `/users?p=${p}&fposc=${fposc}&lposc=${lposc}` : 
+                                    `/users?p=0&fposc=0&lposc=3`),
+                                    class="list-group-item pr-4 pl-5 py-2 border-0 list-group-item-action bg-transparent text-white sidbar-entry-item sidebar-btn mb-1",
+                                    class={active: path === '/users'}
+                                )
+                                    div(class="sidebar-btn-group")
+                                        span(class="d-inline-flex mr-3")
+                                            svg(xmlns="http://www.w3.org/2000/svg",
+                                                viewBox="0 0 24 24",
+                                                width="24" height="24",
+                                                class="main-grid-item-icon",
+                                                fill="none",stroke="currentColor",
+                                                stroke-linecap="round",
+                                                stroke-linejoin="round",
+                                                stroke-width="2")
+                                                    line(x1="8",x2="21",y1="6",y2="6")
+                                                    line(x1="8",x2="21",y1="12",y2="12")
+                                                    line(x1="8",x2="21",y1="18",y2="18")
+                                                    line(x1="3",x2="3.01",y1="6",y2="6")
+                                                    line(x1="3",x2="3.01",y1="12",y2="12")
+                                                    line(x1="3",x2="3.01",y1="18",y2="18")
+                                        | Danh sách
+                                a(
+                                    href="/users/create",
+                                    class="list-group-item pr-4 pl-5 border-0 list-group-item-action bg-transparent text-white py-2 sidbar-entry-item sidebar-btn mb-1",
+                                    class={active: path === '/user/create'}
+                                )
+                                    div(class="sidebar-btn-group")
+                                        span(class="mr-3")
+                                            svg(xmlns="http://www.w3.org/2000/svg",
+                                            viewBox="0 0 24 24" width="24",
+                                            height="24",
+                                            class="main-grid-item-icon" fill="none",
+                                            stroke="currentColor",
+                                            stroke-linecap="round",
+                                            stroke-linejoin="round",
+                                            stroke-width="2")
+                                                rect(height="18",rx="2",ry="2",width="18",x="3",y="3")
+                                                line(x1="12",x2="12",y1="8",y2="16")
+                                                line(x1="8",x2="16",y1="12",y2="12")
+                                        | Thêm mới
+                        //- Sidebar Item Role management
+                        div(class="list-group sidebar-item")
+                            button(
+                                class="sidbar-btn bg-transparent text-left px-4 d-flex text-white",
+                                type="button",
+                                data-toggle="collapse",
+                                data-target="#vaitro",
+                                aria-expanded="false",
+                                aria-controls="vaitro"
+                            )
+                                div(class="sidebar-btn-group")
+                                    span(class="mr-3")
+                                        svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2")
+                                            path(d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z")
+                                    | Vai trò
+                                span(class="d-inline-block")
+                                    svg(xmlns="http://www.w3.org/2000/svg",
+                                    viewBox="0 0 24 24",
+                                    width="24",
+                                    height="24",
+                                    class="main-grid-item-icon",
+                                    fill="none",
+                                    stroke="currentColor",
+                                    stroke-linecap="round",
+                                    stroke-linejoin="round",
+                                    stroke-width="1.5")
+                                        polyline(points="6 9 12 15 18 9")
+                            div(
+                                id="vaitro",
+                                class="collapse sidbar-entry bg-transparent",
+                                class={show: path === '/roles' || path === '/roles/create' || path === '/roles/edit/'}
+                            )
+                                a(
+                                    href=(path === '/roles' ? `/roles?p=${p}&fposc=${fposc}&lposc=${lposc}` : 
+                                    `/roles?p=0&fposc=0&lposc=3`),
+                                    class="list-group-item pr-4 pl-5 py-2 border-0 list-group-item-action bg-transparent text-white sidbar-entry-item sidebar-btn mb-1",
+                                    class={active: path === '/roles'}
+                                )
+                                    div(class="sidebar-btn-group")
+                                        span(class="d-inline-flex mr-3")
+                                            svg(xmlns="http://www.w3.org/2000/svg",
+                                                viewBox="0 0 24 24",
+                                                width="24" height="24",
+                                                class="main-grid-item-icon",
+                                                fill="none",stroke="currentColor",
+                                                stroke-linecap="round",
+                                                stroke-linejoin="round",
+                                                stroke-width="2")
+                                                    line(x1="8",x2="21",y1="6",y2="6")
+                                                    line(x1="8",x2="21",y1="12",y2="12")
+                                                    line(x1="8",x2="21",y1="18",y2="18")
+                                                    line(x1="3",x2="3.01",y1="6",y2="6")
+                                                    line(x1="3",x2="3.01",y1="12",y2="12")
+                                                    line(x1="3",x2="3.01",y1="18",y2="18")
+                                        | Danh sách
+                                a(
+                                    href="/roles/create",
+                                    class="list-group-item pr-4 pl-5 border-0 list-group-item-action bg-transparent text-white py-2 sidbar-entry-item sidebar-btn mb-1",
+                                    class={active: path === '/roles/create'}
+                                )
+                                    div(class="sidebar-btn-group")
+                                        span(class="mr-3")
+                                            svg(xmlns="http://www.w3.org/2000/svg",
+                                            viewBox="0 0 24 24" width="24",
+                                            height="24",
+                                            class="main-grid-item-icon" fill="none",
+                                            stroke="currentColor",
+                                            stroke-linecap="round",
+                                            stroke-linejoin="round",
+                                            stroke-width="2")
+                                                rect(height="18",rx="2",ry="2",width="18",x="3",y="3")
+                                                line(x1="12",x2="12",y1="8",y2="16")
+                                                line(x1="8",x2="16",y1="12",y2="12")
+                                        | Thêm mới
+                        //- Sidebar Item Permisssion management
+                        div(class="list-group sidebar-item")
+                            button(
+                                class="sidbar-btn bg-transparent text-left px-4 d-flex text-white",
+                                type="button",
+                                data-toggle="collapse",
+                                data-target="#permission",
+                                aria-expanded="false",
+                                aria-controls="permission"
+                            )
+                                div(class="sidebar-btn-group")
+                                    span(class="mr-3")
+                                        svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2")
+                                                line(x1="22" x2="2" y1="12" y2="12")
+                                                path(d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z")
+                                                line(x1="6" x2="6.01" y1="16" y2="16")
+                                                line(x1="10" x2="10.01" y1="16" y2="16")
+                                    | Quyền
+                                span(class="d-inline-block")
+                                    svg(xmlns="http://www.w3.org/2000/svg",
+                                    viewBox="0 0 24 24",
+                                    width="24",
+                                    height="24",
+                                    class="main-grid-item-icon",
+                                    fill="none",
+                                    stroke="currentColor",
+                                    stroke-linecap="round",
+                                    stroke-linejoin="round",
+                                    stroke-width="1.5")
+                                        polyline(points="6 9 12 15 18 9")
+                            div(
+                                id="permission",
+                                class="collapse sidbar-entry bg-transparent",
+                                class={show: path === '/permissions' || path === '/permissions/create' || path === '/permission/edit/'}
+                            )
+                                a(
+                                    href=(path === '/permissions' ? `/permissions?p=${p}&fposc=${fposc}&lposc=${lposc}` : 
+                                    `/permissions?p=0&fposc=0&lposc=3`),
+                                    class="list-group-item pr-4 pl-5 py-2 border-0 list-group-item-action bg-transparent text-white sidbar-entry-item sidebar-btn mb-1",
+                                    class={active: path === '/permissions'}
+                                )
+                                    div(class="sidebar-btn-group")
+                                        span(class="d-inline-flex mr-3")
+                                            svg(xmlns="http://www.w3.org/2000/svg",
+                                                viewBox="0 0 24 24",
+                                                width="24" height="24",
+                                                class="main-grid-item-icon",
+                                                fill="none",stroke="currentColor",
+                                                stroke-linecap="round",
+                                                stroke-linejoin="round",
+                                                stroke-width="2")
+                                                    line(x1="8",x2="21",y1="6",y2="6")
+                                                    line(x1="8",x2="21",y1="12",y2="12")
+                                                    line(x1="8",x2="21",y1="18",y2="18")
+                                                    line(x1="3",x2="3.01",y1="6",y2="6")
+                                                    line(x1="3",x2="3.01",y1="12",y2="12")
+                                                    line(x1="3",x2="3.01",y1="18",y2="18")
+                                        | Danh sách
+                                a(
+                                    href="/permissions/create",
+                                    class="list-group-item pr-4 pl-5 border-0 list-group-item-action bg-transparent text-white py-2 sidbar-entry-item sidebar-btn mb-1",
+                                    class={active: path === '/permissions/create'}
+                                )
+                                    div(class="sidebar-btn-group")
+                                        span(class="mr-3")
+                                            svg(xmlns="http://www.w3.org/2000/svg",
+                                            viewBox="0 0 24 24" width="24",
+                                            height="24",
+                                            class="main-grid-item-icon" fill="none",
+                                            stroke="currentColor",
+                                            stroke-linecap="round",
+                                            stroke-linejoin="round",
+                                            stroke-width="2")
+                                                rect(height="18",rx="2",ry="2",width="18",x="3",y="3")
+                                                line(x1="12",x2="12",y1="8",y2="16")
+                                                line(x1="8",x2="16",y1="12",y2="12")
+                                        | Thêm mới

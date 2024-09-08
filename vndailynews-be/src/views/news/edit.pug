@@ -1,0 +1,12 @@
+extends ../layouts/main.pug
+include layoutCreateOrEditNews.pug 
+
+block HEADER_CONTENT
+    link(rel="stylesheet", href="/static/css/create_edit_news.css")
+    script(src="/static/js/news/common_create_edit.js")
+block content
+    +layoutCreateOrEditNews(false, "CHỈNH SỬA THÔNG TIN BÀI ĐĂNG", 0, 0, 3)
+block SCRIPT
+    script(type="module", src="/static/js/news/edit_news.js")
+    
+            

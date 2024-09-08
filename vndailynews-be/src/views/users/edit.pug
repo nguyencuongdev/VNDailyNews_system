@@ -1,0 +1,164 @@
+extends ../layouts/main.pug
+include ../layouts/partials/alert.pug
+
+block HEADER_CONTENT 
+    link(rel="stylesheet", href="/static/css/user.css")
+block content 
+    h2(class='content-title text-center') CHỈNH SỬA THÔNG TIN NGƯỜI DÙNG
+    if msg
+        - var statusMsg = status ? 'success' : 'error';
+        +alert(msg,statusMsg)
+    form(class="form-create mt-4 form-inline align-items-start mt-3",method="POST",
+        action=`/users/${inforUser.id}/edit?p=${p}&fposc=${fposc}&lposc=${lposc}&_method=put`
+    )
+        div(class="form-group col-lg-3 pl-0 d-flex flex-column align-items-start mt-3 pr-3")
+            label(class="mb-2") Tài khoản:
+            p(
+                class="form-control w-100 rounded-0 bg-secondary text-white",
+            )= value=inforUser.account
+            input(
+                type="hidden",
+                name="account",
+                class="form-control w-100 rounded-0",
+                value=inforUser.account
+            )
+        div(class="form-group col-lg-3 pl-0 d-flex flex-column align-items-start mt-3 pr-3")
+            label(for="username" class="mb-2") Tên người dùng:
+            input(
+                type="text",
+                name="username",
+                id="username", 
+                class="form-control w-100 rounded-0",
+                placeholder="Nhập vào tên người dùng",
+                value=inforUser.username
+            )
+            if errors 
+                each error in errors 
+                    if error.path == 'username'
+                        p(class="text-danger ml-2 mt-2")=error.msg
+                        - break
+        if [1,2].includes(inforUser.roleID)
+            div(class="form-group col-lg-3 pl-0 d-flex flex-column align-items-start mt-3 pr-3")
+                label(for="role" class="mb-2") Vai trò:
+                select(
+                    id="role"
+                    name="roleID"
+                    class="selectpicker form-control w-100 rounded-0"
+                    data-style="btn-primary"
+                    title="Chọn vai trò"
+                    data-live-search
+                )
+                    each role in roles
+                        option(value=role.id selected=(role.id === inforUser.roleID))= role.ten
+                if errors 
+                    each error in errors 
+                        if error.path == 'roleID'
+                            p(class="text-danger ml-2 mt-2")=error.msg
+                            - break
+        else 
+            input(
+            type="hidden",
+            name="roleID",
+            class="form-control w-100 rounded-0",
+            value=inforUser.roleID
+            )
+        div(class="form-group col-lg-3 pl-0 d-flex flex-column align-items-start mt-3 pr-3")
+            label(for="email" class="mb-2") Email:
+            input(
+                type="email",
+                name="email",
+                id="email", 
+                class="form-control w-100 rounded-0",
+                placeholder="Nhập vào email",
+                value=inforUser.email
+            )
+            if errors 
+                each error in errors 
+                    if error.path == 'email'
+                        p(class="text-danger ml-2 mt-2")=error.msg
+                        - break
+        div(class="form-group col-lg-3 pl-0 d-flex flex-column align-items-start mt-3 pr-3")
+            label(for="phone" class="mb-2") SĐT:
+            input(
+                type="text",
+                name="phone",
+                id="phone", 
+                class="form-control w-100 rounded-0",
+                placeholder="+84",
+                value=inforUser.phone
+            )
+            if errors
+                each error in errors 
+                    if error.path == 'phone'
+                            p(class="text-danger ml-2 mt-2")=error.msg
+                            - break
+        div(class="form-group col-lg-3 pl-0 d-flex flex-column align-items-start mt-3 pr-3")
+            label(for="status" class="mb-2") Trạng thái:
+            select(
+                id="status"
+                name="status"
+                class="selectpicker form-control w-100 rounded-0"
+                data-style="btn-primary"
+                title="Chọn trạng thái"
+            )
+                option(value=1 selected=(inforUser.status === true)) Hoạt động
+                option(value=0 selected=(inforUser.status === false)) Không hoạt động
+            if errors 
+                each error in errors 
+                    if error.path == 'status'
+                        p(class="text-danger ml-2 mt-2")=error.msg
+                        - break
+        div(class="form-group col-lg-3 pl-0 d-flex flex-column align-items-start mt-3 pr-3")
+                    label(for="password" class="mb-2") Mật khẩu mới:
+                    input(
+                        type="text",
+                        name="password",
+                        id="password", 
+                        class="form-control w-100 rounded-0",
+                        placeholder="Nhập vào mật khẩu mới",
+                        value=inforUser.password
+                    )
+                    if errors 
+                        each error in errors 
+                            if error.path == 'password'
+                                p(class="text-danger ml-2 mt-2")=error.msg
+                                - break
+        div(class="form-group col-lg-12 pl-0 d-flex flex-column align-items-start mt-3 pr-3")
+            label(for="note" class="mb-2") Ghi chú:
+            textarea(
+                name="note",
+                id="note", 
+                class="form-control w-100 rounded-0",
+                placeholder="Nhập vào một đoạn ghi chú",
+            )=inforUser.note
+        div(class="form-group d-flex justify-content-start mt-4 col-lg-12 px-0")
+            div(class="d-flex col-lg-3 pl-0") 
+                button(class="btn btn-primary form-button rounded-0 w-50 ",type="submit") Cập nhật
+                a(class="btn btn-secondary form-button form-button-cancel rounded-0 ml-3 w-50 ",href=`/users?p=${p}&fposc=${fposc}&lposc=${lposc}`) Hủy bỏ
+    p(class="text-danger ml-2 mt-3 font-italic mb-2 d-flex note") 
+        span 
+            | Lưu ý:
+        span.ml-2 
+            | Nếu để trống mật khẩu mới thì sẽ không thay đổi mật khẩu trước đó!
+            br
+            | Nếu nếu nhập vào mật khẩu mới sẽ thay đổi mật khẩu!!
+    
+block SCRIPT 
+    script.
+        $(document).ready(function(){
+            const eAlert = $('#alert');
+            $('.selectpicker').selectpicker();
+
+            if(eAlert){
+                const eBtnCloseAlert = $('#btn-close');
+                const timmer_id = setTimeout(()=>{
+                     eAlert.hide();
+                },5000); //5s
+                eBtnCloseAlert.click(() => {
+                eAlert.hide();
+                    clearTimeout(timmer_id);
+                })
+             }
+        });
+
+ 

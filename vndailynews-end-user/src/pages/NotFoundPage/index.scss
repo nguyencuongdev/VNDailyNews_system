@@ -1,0 +1,43 @@
+.not-found {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .img-404{
+    width:350px;
+    img{
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+  }
+  .notification{
+    margin-left: 50px;
+    width: 40%;
+    .home {
+      margin-top:30px;
+      width: 200px;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      background-color: var(--primary-color);
+      span{
+          color: var(--white-color);
+          font-size: 18px;
+          font-weight: bold;
+      }
+      &:hover{
+          background-color: var( --primary-hover-color);
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+
+

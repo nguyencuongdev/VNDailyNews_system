@@ -1,0 +1,40 @@
+include ./partials/sidebar.pug
+include ./partials/header.pug
+include ./partials/progress-bar.pug
+
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title VNDailyNews
+        link(rel="shortcut icon", href="/static/imgs/favicon.png", type="image/x-icon")
+        link(rel="preconnect",href="https://fonts.googleapis.com")
+        link(rel="preconnect", href="https://fonts.gstatic.com" crossorigin)
+        link(href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" ,rel="stylesheet")
+        link(rel="stylesheet", href="/bootstrap/css/bootstrap.min.css")
+        link(href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css" rel="stylesheet")
+        link(href="/froala-editor/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css")
+        link(rel="stylesheet", href="/photoswipe/css/photoswipe.css")
+        link(rel="stylesheet", href="/static/css/base.css")
+        link(rel="stylesheet", href="/static/css/style.css")
+        script(src="/jquery/jquery.min.js")
+        block HEADER_CONTENT
+    body 
+        +header(user)
+        main(class='main')
+            +sidebar(path,user.vaitro_id)
+            div(class="content px-4") 
+                block content
+                +progressBar()
+        footer(class="d-flex justify-content-between pr-4 pb-4 footer mt-4")
+            div(class="footer-copyright text-primary pl-4 d-flex align-items-center")
+                h6(class="footer-copyright-title") @2024 - Phát triển bời 👨‍💻cdev, linh chii và văn phương ✅
+            div(class="footer-logo")
+                img(src="/static/imgs/Logo_VNDailyNews.png", alt="logo", srcset="")
+        script(src="/popperjs/popper.js")  
+        script(src="/bootstrap/js/bootstrap.min.js")
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js")
+        script(type="text/javascript" src="/froala-editor/js/froala_editor.pkgd.min.js")
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js")
+        block SCRIPT
+        

@@ -1,0 +1,21 @@
+.btn-menu-account {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: none;
+
+    &:focus {
+        box-shadow: unset;
+    }
+}
+
+.dropdown-menu-account {
+    z-index: 100;
+    border-top: 3px solid var(--primary-active-color);
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
+}
+
+.dropdown-menu-account-item:hover {
+    color: var(--white-color);
+    background-color: var(--primary-hover-color);
+}

@@ -1,0 +1,53 @@
+extends ../layouts/main.pug
+include ../layouts/partials/alert.pug
+
+block HEADER_CONTENT 
+    link(rel="stylesheet", href="/static/css/category.css")
+block content 
+    h2(class='content-title text-center') THÊM MỚI QUYỀN
+    if msg
+        - var statusMsg = status ? 'success' : 'error';
+        +alert(msg,statusMsg)
+    form(class="form-create mt-4",method="POST",action="/permissions/create")
+        div(class="form-group")
+            label(for="name") Tên quyền:
+            input(
+                type="text",
+                name="name",
+                id="name", 
+                class="form-control",
+                placeholder="Nhập vào tên quyền",
+                value=name
+            )
+            if errors
+                each error in errors
+                    if error.path === 'name'
+                        p(class="text-danger ml-2 mt-2")=error.msg
+                        -break;
+        div(class="form-group col-lg-12 pl-0 d-flex flex-column align-items-start mt-3 pr-0")
+            label(for="note" class="mb-2") Ghi chú:
+            textarea(
+                name="note",
+                id="note", 
+                class="form-control w-100 rounded-0",
+                placeholder="Nhập vào một đoạn ghi chú",
+            )=note
+        div(class="form-group d-flex justify-content-start")
+            button(class="btn btn-primary form-button rounded-0",type="submit") Tạo
+            a(class="btn btn-secondary form-button rounded-0 ml-3",href=`/permissions?p=${p}&fposc=${fposc}&lposc=${lposc}`) Hủy bỏ
+block SCRIPT 
+    script.
+        $(document).ready(function(){
+            const eAlert = $('#alert');
+            if(eAlert){
+                const eBtnCloseAlert = $('#btn-close');
+                const timmer_id = setTimeout(()=>{
+                    eAlert.hide();
+                },5000); //5s
+                eBtnCloseAlert.click(() => {
+                    eAlert.hide();
+                    clearTimeout(timmer_id);
+                })
+             }
+        });
+ 

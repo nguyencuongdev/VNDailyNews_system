@@ -1,0 +1,280 @@
+extends ../layouts/main.pug
+include ../layouts/partials/panigation.pug
+include ../layouts/partials/diabox.pug
+include ../layouts/partials/alert.pug
+
+
+//- từ khóa block tong template children dùng để đánh dấu nội dung sẽ được nạp vào trong block parent tương ứng
+block HEADER_CONTENT
+    link(rel="stylesheet", href="/static/css/news.css")
+block content
+    h2(class="content-title text-center") DANH SÁCH BÀI ĐĂNG 
+    form(class="form-search mt-3")
+        div(class="form-group d-flex aligin-items-center") 
+            input(class="form-control flex-1 rounded-0",placeholder="Tìm kiếm bài đăng....",name="search", id="search-input" value=q)
+            button(class="btn form-button btn-primary rounded-0" id="btn-search" type="button") 
+               svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2")
+                   circle(cx="11" cy="11" r="8")
+                   line(x1="21" x2="16.65" y1="21" y2="16.65")
+    div(class="content-functions mt-2 d-flex justify-content-between")
+        div(class="content-functions-group d-flex justify-content-between")
+            div(class="content-functions-item d-flex  align-items-center content-functions-sort")
+                span(class="content-functions-title mr-2")   Sắp xếp bài đăng theo: 
+                select(
+                        class="selectpicker form-control content-select rounded-0"
+                        id="sort-select"
+                        title="Chọn thể loại"
+                    )
+                        option(value="timeNew" selected=(s == "timeNew")) Thời gian mới nhất
+                        option(value="timeOld" selected=(s == "timeOld")) Thời gian cũ nhất
+                        option(value="seenLarge" selected=(s == 'seenLarge')) Lượt xem nhiều nhất
+                        option(value="seenSmall" selected=(s == 'seenSmall')) Lượt xem ít nhất
+            div(class="content-functions-item d-flex align-items-center ml-3")
+                span(class="content-functions-title mr-2") Lọc bài đăng theo thể loại: 
+                select(
+                        class="selectpicker form-control content-select rounded-0"
+                        id="filter-select"
+                        title="Chọn thể loại"
+                        data-live-search
+                        data-size="6"
+                    )
+                        option(value="" selected=(ft === "")) Tất cả
+                        each tag in tags
+                            option(selected=(ft === tag.ten) value=tag.ten)= tag.ten
+        div(class="content-funstions-item")
+            a(class="btn btn-primary content-btn d-flex align-items-center px-2 rounded-0",href="/news/create")
+                span(class="mr-2")
+                    svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2")
+                        rect(height="18" rx="2" ry="2" width="18" x="3" y="3")
+                        line(x1="12" x2="12" y1="8" y2="16")
+                        line(x1="8" x2="16" y1="12" y2="12")
+                | Thêm mới  
+    div(class="content-list")
+        table(class="content-table")
+            thead(class="content-table-thead")
+                th(class="content-table-th") STT
+                th(class="content-table-th") Ảnh đại diện
+                th(class="content-table-th") Tiêu đề
+                th(class="content-table-th") Thể loại
+                th(class="content-table-th") Danh mục
+                th(class="content-table-th") Ngày đăng
+                th(class="content-table-th") Ngày cập nhật
+                th(class="content-table-th") Người đăng
+                th(class="content-table-th") Số lượt xem
+                th(class="content-table-th") Trạng thái
+                th(class="content-table-th") #
+            tbody(classs="content-table-tbody")
+                -var index = (p * 10) + 1
+                if newsList.length > 0 
+                    each news in newsList 
+                        tr(classs="content-table-tr") 
+                            td(classs="content-table-td")= index++
+                            td(classs="content-table-td") 
+                                span(class="content-news-img") 
+                                    img(src=news.anhdaidien, alt="Ảnh test", srcset="")
+                            td(classs="content-table-td") 
+                                a(href=`/news/${news.id}/detail?p=${p}&fposc=${fposc}&lposc=${lposc}`)= news.tieude
+                            td(classs="content-table-td")
+                                - var index2 = 1
+                                each tag in news.tags
+                                    = tag.ten
+                                    if index2++ != news.tags.length 
+                                        = ", "                                        
+                            td(classs="content-table-td")
+                                - var uniqueCategory = new Set()
+                                - var index3 = 0
+                                each tag in news.tags
+                                    if !uniqueCategory.has(tag.category.ten)
+                                        - uniqueCategory.add(tag.category.ten)
+                                        = tag.category.ten  
+                                    if(++index3 != news.tags.length)
+                                        |, 
+                            td(classs="content-table-td")= formatDateTime(news.ngaydang)
+                            td(classs="content-table-td")=  formatDateTime(news.ngaysua)
+                            td(classs="content-table-td")= news.user.tenhienthi
+                            td(classs="content-table-td")= news.soluotxem
+                            if [1,2].includes(user.vaitro_id)
+                                td(classs="content-table-td")
+                                    select(
+                                        class="content-status-news form-control content-select rounded-0"
+                                        data-target=news.id
+                                    )
+                                        option(value="-1" selected=(news.trangthai === null) class="status-pending") 🕛 Đang xử lý...
+                                        option(value="0" selected=(news.trangthai === false) class="status-fail") ⛔ Không hợp lệ
+                                        option(value="1" selected=(news.trangthai === true) class="status-success") ✅ Hợp lệ
+                            else 
+                                if  news.trangthai
+                                    td(classs="content-table-td") ✅ Hợp lệ
+                                else if news.trangthai === false
+                                    td(classs="content-table-td") ⛔ Không hợp lệ
+                                else 
+                                    td(classs="content-table-td") 🕛 Đang xử lý...
+                                    
+                            td(classs="content-table-td") 
+                                if news.trangthai !== false && user.vaitro_id === 3 
+                                    a(class="btn btn-primary btn-sm content-btn mr-2" href=`/news/${news.id}/edit`) Sửa
+                                if (news.nguoidung_id === user.id && user.vaitro_id === 2) || user.vaitro_id === 1
+                                    a(class="btn btn-primary btn-sm content-btn mr-2" href=`/news/${news.id}/edit`) Sửa
+                                button(class="btn btn-danger btn-sm content-btn content-btn-delete rounded-0" 
+                                data-target=news.id,
+                                data-count=newsList.length,
+                                data-page=p,
+                                data-fposc=fposc,
+                                data-lposc=lposc
+                            ) Xóa
+                - for (let i = 0; i < 10 - newsList.length; i++)
+                    tr(classs="content-table-tr") 
+                        td(classs="content-table-td")
+                        td(classs="content-table-td") 
+                            span(class="content-news-img") 
+                        td(classs="content-table-td") 
+                        td(classs="content-table-td")
+                        td(classs="content-table-td")
+                        td(classs="content-table-td")
+                        td(classs="content-table-td")
+                        td(classs="content-table-td")
+                        td(classs="content-table-td")
+                        td(classs="content-table-td") 
+                        td(classs="content-table-td") 
+    div(id="alert-delete-success" style="display: none;")
+        +alert('Xóa bài đăng thành công', 'success')
+    div(id="alert-delete-error" style="display: none;")
+        +alert('Xóa bài đăng thành công', 'success')
+    if totalPage > 1
+        div(class='content-pagination mt-4 d-flex justify-content-center')
+            if q 
+                if ft
+                    +panigation(`/news?q=${q}&ft=${ft}&s=${s}&`,totalPage,totalPerOnPage,p,fposc,lposc)
+                else 
+                    +panigation(`/news?q=${q}&s=${s}&`,totalPage,totalPerOnPage,p,fposc,lposc)
+            else 
+                if ft
+                    +panigation(`/news?ft=${ft}&s=${s}&`,totalPage,totalPerOnPage,p,fposc,lposc)
+                else 
+                    +panigation(`/news?s=${s}&`,totalPage,totalPerOnPage,p,fposc,lposc)
+    +diabox('Bạn có chắc muốn xóa bài đăng này không ?')
+
+block SCRIPT
+    script.
+        $('.selectpicker').selectpicker()
+        const alertDeleteSuccess = $('#alert-delete-success');
+        const alertDeleteError = $('#alert-delete-error');
+        const diabox = $('#diabox');
+        const buttonSearch = $('#btn-search');
+        const eInputSearch = $('#search-input');
+        const eSelectSort = $('#sort-select');
+        const eSelectFilter = $('#filter-select');
+        const eBtnDeleteNews = $('.content-btn-delete');
+        const eBtnAcceptDiabox = $('#btnAcceptDiabox');
+        const eBtnCancelDiabox = $('#btnCancelDiabox');
+        const eChangeStatusNewsList = $('.content-status-news');
+
+        
+        function handleFetchData(e){
+            let valueFilter = eSelectFilter.val();
+            let valueSort = eSelectSort.val();
+            let valueSearch = eInputSearch.val();
+            if(valueFilter){
+                window.location.href = valueSearch ? `/news?q=${valueSearch}&ft=${valueFilter}&s=${valueSort}&p=0&fposc=0&lposc=3` : `/news?ft=${valueFilter}&s=${valueSort}&p=0&fposc=0&lposc=3`;
+            }else{
+                window.location.href = valueSearch ? `/news?q=${valueSearch}&s=${valueSort}&p=0&fposc=0&lposc=3` : `/news?s=${valueSort}&p=0&fposc=0&lposc=3`;
+            }
+        }
+
+        eSelectFilter.change(handleFetchData)
+        eSelectSort.change(handleFetchData)
+        buttonSearch.click(handleFetchData)
+        eInputSearch.keypress((event) => {
+            if(event.which == 13) { // 13 là mã phím Enter
+                event.preventDefault();
+                handleFetchData(event)
+            }
+        })
+
+
+        //- hàm xử lý xóa news
+        function hanldeDelete(e){
+            diabox.show();
+            const valueTarget = e.target.getAttribute('data-target');
+            const totalNewsOnPage = e .target.getAttribute('data-count');
+            let page = e.target.getAttribute('data-page');
+            let fposc = e.target.getAttribute('data-fposc');
+            let lposc = e.target.getAttribute('data-lposc');
+            
+            eBtnAcceptDiabox.click(() => {
+                diabox.hide();
+                fetch(`/news/delete?p=${page}&fposc=${fposc}&lposc=${lposc}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        id: valueTarget,
+                        totalNewsOnPage,
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data.statusCode == 200)
+                            alertDeleteSuccess.css("display","block");
+                            setTimeout(() => {
+                                window.location.href = `/news?p=${data.p}&fposc=${data.fposc}&lposc=${data.lposc}`;
+                            },500)
+                        })
+                    .catch(error => {
+                        alertDeleteError.css("display","block");
+                    });
+            })
+            eBtnCancelDiabox.click((e) => {
+                diabox.hide();
+            })
+        }
+
+        //hàm xử lý update trạng thái bài đăng
+        async function handleUpdateStatusNews(status,idNews){
+            try{
+                const res = await fetch(`/news/update-status/${idNews}`,{
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                       status
+                    })
+                })
+                const contentRep = await res.json();
+                alert(contentRep.message);
+            }catch(e){
+                alert('Cập nhật trạng thái bài đăng thất bại, server đang xảy ra lỗi');
+            }
+        }
+
+        Array.from(eBtnDeleteNews).forEach((item) => {
+            item.addEventListener('click', hanldeDelete)
+        })
+
+        Array.from(eChangeStatusNewsList).forEach((item) => {
+            item.addEventListener('change',(e) => {
+                let status = e.target.value;
+                let idNews = e.target.getAttribute('data-target');
+                switch(status){
+                    case '-1': {
+                        status = null;
+                        break;
+                    }
+                    case '1': {
+                        status = true
+                        break;
+                    }
+                    case "0": {
+                        status= false;
+                        break;
+                    }
+                }
+               handleUpdateStatusNews(status,idNews);
+            })
+        })
+
+
+            
+

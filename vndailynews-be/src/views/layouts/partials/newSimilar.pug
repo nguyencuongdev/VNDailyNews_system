@@ -1,0 +1,8 @@
+
+mixin newsSimilar(news)
+    div(class="content-similar-item my-3")
+        a(href=`/news/${news.id}/detail` class="d-flex w-100 h-100") 
+            div(class="content-similar-img")
+                img(src=news.anhdaidien, alt=`${image-index}`, srcset="" class="w-100 h-100")
+            div(class="content-similar-item-title ml-2")
+                p= news.tieude

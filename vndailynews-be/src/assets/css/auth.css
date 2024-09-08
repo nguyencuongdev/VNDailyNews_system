@@ -1,0 +1,70 @@
+.header-brand {
+  width: 200px;
+  height: auto;
+}
+
+.form-forgot-password,
+.form-change-password,
+.form-register,
+.form-login {
+  width: 400px;
+  margin: 20px auto;
+}
+
+.form-forgot-password-title,
+.form-change-password-title,
+.form-register-title,
+.form-login-title {
+  font-size: 32px;
+  color: var(--primary-color);
+}
+
+.form-btn {
+  width: 120px;
+  height: 40px;
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.link-redirect {
+  font-size: 12px;
+}
+
+#alert {
+  position: fixed;
+  top: 20px;
+  width: 400px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 99;
+}
+
+.form-body {
+  max-height: calc(350px + (8px * 7));
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.form-body::-webkit-scrollbar {
+  width: 4px;
+}
+
+.form-body::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 8px;
+}
+
+.form-body::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-hover-color);
+}
+
+.message {
+  font-size: 12px;
+  margin-bottom: 0;
+}
+
+.message-label {
+  display: inline-block;
+  font-size: 12px;
+  font-style: italic;
+}

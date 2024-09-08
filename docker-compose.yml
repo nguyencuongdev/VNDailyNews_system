@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ./vndailynews-end-user
+      dockerfile: Dockerfile
+    image: vndailynews-fe-image
+    container_name: vndailynews-fe-container
+    restart: unless-stopped
+    tty: true
+    working_dir: /app
+    environment:
+      PORT: 3456
+    ports:
+      - 3456:80
+    depends_on:
+      - be
+    volumes:
+      - ./vndailynews-end-user/docker/nginx_log:/var/log/nginx
+    networks:
+      - vndailynews
+  be:
+    build:
+      context: ./vndailynews-be
+      dockerfile: Dockerfile
+    image: vndailynews-be-image
+    container_name: vndailynews-be-container
+    restart: unless-stopped
+    depends_on:
+      - db
+    ports:
+      - 5678:5678
+    expose:
+      - 5678
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: vndailynews
+      DB_USERNAME: root
+      DB_PASSWORD: Nmc170603
+    networks:
+      - vndailynews
+  db:
+    image: mysql:5.7
+    container_name: vndailynews-db
+    restart: unless-stopped
+    ports:
+      - 3309:3306
+    expose:
+      - 3306
+    environment:
+      MYSQL_DATABASE: vndailynews
+      MYSQL_ROOT_PASSWORD: Nmc170603
+    volumes:
+      - ./vndailynews-be/docker/mysql:/var/lib/mysql
+    networks:
+      - vndailynews
+networks:
+  vndailynews:
+    driver: bridge

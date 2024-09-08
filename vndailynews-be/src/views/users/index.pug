@@ -1,0 +1,144 @@
+extends ../layouts/main.pug
+include ../layouts/partials/panigation.pug
+include ../layouts/partials/diabox.pug
+
+block HEADER_CONTENT
+    link(rel="stylesheet", href="/static/css/category.css")
+block content 
+    h2(class="content-title text-center")  DANH SÁCH NGƯỜI DÙNG
+    div(class="content-functions d-flex justify-content-between align-items-center")
+        div(class="content-functions-item")
+            div(class="form-search mt-3" id="formSearch")
+                div(class="form-group d-flex align-items-center") 
+                    input(class="form-control flex-1 rounded-0",
+                        placeholder="Tìm kiếm người dùng....",
+                        name="search" 
+                        id="inputSearch"
+                        value=q
+                    )
+                    button(class="btn form-button btn-primary rounded-0" id="btnSearch" type="button") 
+                        svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2")
+                            circle(cx="11" cy="11" r="8")
+                            line(x1="21" x2="16.65" y1="21" y2="16.65")
+        div(class="content-funstions-item")
+            a(class="btn btn-primary content-btn d-flex align-items-center px-2 rounded-0",href="/users/create")
+                span(class="mr-2")
+                    svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2")
+                        rect(height="18" rx="2" ry="2" width="18" x="3" y="3")
+                        line(x1="12" x2="12" y1="8" y2="16")
+                        line(x1="8" x2="16" y1="12" y2="12")
+                | Thêm mới  
+    div(class="content-list")
+        table(class="content-table")
+            thead(class="content-table-thead")
+                th(class="content-table-th") STT
+                th(class="content-table-th") Tên người dùng
+                th(class="content-table-th") Tài khoản
+                th(class="content-table-th") Mật khẩu
+                th(class="content-table-th") Vai trò
+                th(class="content-table-th") Email
+                th(class="content-table-th") SĐT
+                th(class="content-table-th") Trạng thái
+                th(class="content-table-th") #
+            tbody(class="content-table-tbody")
+                - var index = (p * 10) + 1
+                -  for (let i = 0;i < users.length; i++)
+                        tr(class="content-table-tr") 
+                            td(class="content-table-td")= index++
+                            td(class="content-table-td")= users[i].tenhienthi
+                            td(class="content-table-td")= users[i].taikhoan
+                            td(class="content-table-td")= users[i].matkhau
+                            td(class="content-table-td")= users[i].role.ten
+                            td(class="content-table-td")= users[i].email
+                            td(class="content-table-td")= users[i].sdt
+                            td(classs="content-table-td")= users[i].trangthai ?  "✅ Hoạt động" : "⛔ Không hoạt động"
+                            td(class="content-table-td")
+                                if user.id != users[i].id
+                                    a(
+                                        class="btn btn-primary btn-sm content-btn mr-2",
+                                        href=`/users/${users[i].id}/edit?p=${p}&fposc=${fposc}&lposc=${lposc}`) 
+                                            | Sửa
+                                    button(
+                                        class="btn btn-danger btn-sm content-btn rounded-0 content-btn-delete",
+                                        data-target=users[i].id,
+                                        data-count=users.length,
+                                        data-page=p,
+                                        data-fposc=fposc,
+                                        data-lposc=lposc
+                                    ) 
+                                            | Xóa
+                if users.length < 10
+                    -  for (let i = 0;i < 10 - users.length; i++)
+                        tr(class="content-table-tr") 
+                            td(class="content-table-td")
+                            td(class="content-table-td")
+                            td(class="content-table-td")
+                            td(class="content-table-td")
+                            td(class="content-table-td")
+                            td(class="content-table-td")
+                            td(class="content-table-td")
+                            td(class="content-table-td")
+                            td(class="content-table-td")
+    if totalPage > 1
+        div(class='content-pagination mt-4 d-flex justify-content-center')
+            if q 
+                +panigation(`/users?q=${q}&`,totalPage,totalPerOnPage,p,fposc,lposc)
+            else 
+                +panigation('/users?',totalPage,totalPerOnPage,p,fposc,lposc)
+
+    +diabox('Bạn có chắc muốn xóa users này không ?')
+block SCRIPT
+    script.
+        $(document).ready(() => {
+            const eBtnSearch = $('#btnSearch'); 
+            const diabox = $('#diabox');
+            const eBtnAcceptDiabox = $('#btnAcceptDiabox');
+            const eBtnCancelDiabox = $('#btnCancelDiabox');
+            const eBtnDeleteUsers = $('.content-btn-delete');
+            const urlPage = $('#urlPage');
+
+            //- hàm xử lý xóa user
+            function hanldeDelete(e){
+                diabox.show();
+                const valueTarget = e.target.getAttribute('data-target');
+                const totalUserOnPage = e .target.getAttribute('data-count');
+                let page = e.target.getAttribute('data-page');
+                let fposc = e.target.getAttribute('data-fposc');
+                let lposc = e.target.getAttribute('data-lposc');
+                eBtnAcceptDiabox.click(() => {
+                    fetch(`/users/delete?p=${page}&fposc=${fposc}&lposc=${lposc}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ 
+                            id: valueTarget,
+                            totalUserOnPage,
+                        })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if(data.statusCode == 200)
+                                window.location.href = `/users?p=${data.p}&fposc=${data.fposc}&lposc=${data.lposc}`;
+                        })
+                        .catch(error => {
+                            windown.location.href = '/500'
+                        });
+                })
+                eBtnCancelDiabox.click((e) => {
+                    diabox.hide();
+                })
+            }
+
+            Array.from(eBtnDeleteUsers).forEach((item) => {
+                item.addEventListener('click', hanldeDelete)
+            })
+
+            function handleSearch(e){
+                const eInputSearch = $('#inputSearch');
+                let valueSearch = eInputSearch.val();
+                window.location.href = valueSearch ? '/users?p=0&fposc=0&lposc=3&q=' + valueSearch : '/users?p=0&fposc=0&lposc=3';
+            }
+            //- Gán sự sự trên btn search xử lý search khi người dùng click
+            eBtnSearch.click(handleSearch);
+        })

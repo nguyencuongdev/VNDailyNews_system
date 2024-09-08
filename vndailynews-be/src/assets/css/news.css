@@ -1,0 +1,23 @@
+/* Content */
+.form-search {
+  width: 600px;
+  margin: 0 auto;
+}
+
+.content-news-img {
+  display: inline-block;
+  aspect-ratio: 16 / 9;
+  height: 60px;
+}
+
+.content-news-img>img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.content-select.content-status-news {
+  width: 160px;
+  min-width: 100%;
+  padding: 0;
+}

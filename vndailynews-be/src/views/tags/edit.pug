@@ -1,0 +1,62 @@
+extends ../layouts/main.pug
+include ../layouts/partials/alert.pug
+
+block HEADER_CONTENT 
+    link(rel="stylesheet", href="/static/css/tag.css")
+block content 
+    h2(class='content-title text-center') CHỈNH SỬA THỂ LOẠI
+    if msg
+        - var statusMsg = status ? 'success' : 'error';
+        +alert(msg,statusMsg)
+    form(
+        class="form-create mt-4 form-inline align-items-start"
+        method="POST"
+        action=`/tags/${id}/edit?_method=put&p=${p}&fposc=${fposc}&lposc=${lposc}`
+    )
+        div(class="form-group col-lg-6 pl-0 d-flex flex-column align-items-start")
+            label(for="name" class="mb-2") Tên thể loại:
+            input(
+                type="text",
+                name="name",
+                id="name", 
+                class="form-control w-100 rounded-0",
+                placeholder="Nhập vào tên danh mục",
+                value=name
+            )
+            if errors && errors[0] && errors[0].path === 'name'
+                p(class="text-danger ml-2 mt-2")=errors[0].msg
+        div(class="form-group col-lg-6 pr-0 d-flex flex-column align-items-start")
+            label(for="category" class="mb-2") Danh mục:
+            select(
+                name="categoryID"
+                class="selectpicker form-control w-100 rounded-0"
+                data-style="btn-primary"
+                title="Chọn danh mục"
+                data-live-search
+            )
+                each category in categorys
+                    option(value=category.id, selected=(category.id === categoryID))=category.ten
+            if errors && ((errors[0] && errors[0].path === 'category_id') || (errors[1] && errors[1].path === 'category_id'))
+                p(class="text-danger ml-2 mt-2")=errors[0].msg || errors[1].msg
+        div(class="form-group d-flex justify-content-start mt-4")
+            button(class="btn btn-primary form-button rounded-0",type="submit") Cập nhật
+            a(class="btn btn-secondary form-button rounded-0 ml-3",href=`/tags?p=${p}&fposc=${fposc}&lposc=${lposc}`) Hủy bỏ
+block SCRIPT 
+    script.
+        $(document).ready(function(){
+            const eAlert = $('#alert');
+            $('.selectpicker').selectpicker();
+
+            if(eAlert){
+                const eBtnCloseAlert = $('#btn-close');
+                const timmer_id = setTimeout(()=>{
+                        eAlert.hide();
+                },5000); //5s
+                eBtnCloseAlert.click(() => {
+                eAlert.hide();
+                clearTimeout(timmer_id);
+                })
+             }
+        });
+
+ 

@@ -1,0 +1,133 @@
+.article-detail {
+  margin-bottom: 20px;
+  .nav {
+    margin-bottom: 15px;
+    p{
+      padding-top: 2px;
+    }
+    ul {
+      li {
+        a {
+          font-size: 14px;
+        }
+        .home {
+          color: #959595;
+          &::after {
+            content: "|";
+            padding: 0 7px;
+          }
+        }
+        .tag {
+          color: var(--primary-color);
+          padding-right: 10px;
+        }
+      }
+    }
+    .time {
+      font-size: 14px;
+      color: #959595;
+    }
+  }
+  .title {
+    font-size: 27px;
+    line-height: 1.3;
+    font-weight: bold;
+    color: #252525;
+  }
+  .summary-content {
+    font-size: 15px;
+    line-height: 24px;
+    color: #252525;
+  }
+  .content-details {
+    border-bottom: 3px solid #e3e3e3;
+    table tbody tr td {
+      text-align: center;
+      text-wrap: nowrap;
+      padding: 8px;
+      max-width: 200px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .images {
+      text-align: center;
+      img {
+        width: 100%;
+        height: auto;
+      }
+      .image-name {
+        text-align: center;
+        font-style: italic;
+        margin-top: 10px;
+        padding-top: 10px;
+        font-size: 16px;
+        color: #555;
+      }
+    }
+
+    img {
+      margin: 15px 0;
+      cursor: pointer;
+    }
+    .audio-container {
+      margin-top: 20px !important;
+      width: 500px;
+      margin: 0 auto;
+      audio {
+        width: 100%;
+      }
+    }
+    .video-container {
+      margin-top: 20px;
+      position: relative;
+      width: 100%; /* Chiều rộng của container */
+      padding-top: 56.25%; /* Để giữ tỷ lệ 16:9 */
+      overflow: hidden; /* Đảm bảo nội dung không tràn ra ngoài */
+    }
+
+    .video-container video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .video-error {
+      color: red;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .video-name {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+  }
+  .posting-date{
+    margin-top: 20px;
+    p{
+      color: #959595;
+      font-size: 14px;
+      font-style: italic;
+    }
+  }
+}
+@media (max-width: 1200px) {
+  .content-details{
+    .richtext-content{
+      >div{
+        width: 100% !important;
+      }
+      figure{
+        width: 100% !important;
+        text-align: center;
+        img{
+          margin: 0 !important;
+        }
+      }
+    }
+  }
+}

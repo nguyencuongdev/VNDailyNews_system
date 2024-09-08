@@ -1,0 +1,17 @@
+.form-search {
+  width: 400px;
+}
+
+.form-create {
+  width: 600px;
+}
+
+.form-button {
+  width: 120px;
+  height: 36px;
+}
+
+.form-search .form-button {
+  width: 48px;
+  height: 38px;
+}

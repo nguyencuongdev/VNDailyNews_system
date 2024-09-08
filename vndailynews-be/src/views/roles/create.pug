@@ -1,0 +1,74 @@
+extends ../layouts/main.pug
+include ../layouts/partials/alert.pug
+
+block HEADER_CONTENT 
+    link(rel="stylesheet", href="/static/css/tag.css")
+block content 
+    h2(class='content-title text-center') THÊM MỚI VAI TRÒ
+        if msg
+            - var statusMsg = status ? 'success' : 'error';
+            +alert(msg,statusMsg)
+    form(class="form-create mt-4 form-inline align-items-start",method="POST",action="/roles/create")
+        div(class="form-group col-lg-6 pl-0 d-flex flex-column align-items-start")
+            label(for="name" class="mb-2") Tên vai trò:
+            input(
+                type="text",
+                name="name",
+                id="name", 
+                class="form-control w-100 rounded-0",
+                placeholder="Nhập vào tên vai trò",
+                value=name
+            )
+            if errors
+                each error in errors
+                    if error.path === 'name'
+                        p(class="text-danger ml-2 mt-2")=error.msg
+                        -break;
+        div(class="form-group col-lg-6 pr-0 d-flex flex-column align-items-start")
+            label(for="category" class="mb-2") Quyền:
+            select(
+                name="permissionID"
+                class="selectpicker form-control w-100 rounded-0"
+                data-style="btn-primary"
+                style="width: 200px;"
+                title="Chọn quyền"
+                data-live-search
+            )
+                each permission in permissions
+                    option(value=permission.id selected=(permission.id == permissionID))=permission.ten
+            if errors
+                each error in errors
+                    if error.path === 'permissionID'
+                        p(class="text-danger ml-2 mt-2")=error.msg
+                        -break;
+        div(class="form-group col-lg-12 pl-0 d-flex flex-column align-items-start mt-3 pr-0")
+            label(for="note" class="mb-2") Ghi chú:
+            textarea(
+                name="note",
+                id="note", 
+                class="form-control w-100 rounded-0",
+                placeholder="Nhập vào một đoạn ghi chú",
+            )=note
+        div(class="form-group d-flex justify-content-start mt-4")
+            button(class="btn btn-primary form-button rounded-0",type="submit") Tạo
+            a(class="btn btn-secondary form-button rounded-0 ml-3",href=`/roles?p=${p}&fposc=${fposc}&lposc=${lposc}`) Hủy bỏ
+block SCRIPT 
+    script.
+        $(document).ready(function(){
+            const eAlert = $('#alert');
+        
+            $('.selectpicker').selectpicker();
+
+            if(eAlert){
+                const eBtnCloseAlert = $('#btn-close');
+                const timmer_id = setTimeout(()=>{
+                        eAlert.hide();
+                },5000); //5s
+                eBtnCloseAlert.click(() => {
+                eAlert.hide();
+                clearTimeout(timmer_id);
+                })
+             }
+        });
+
+ 

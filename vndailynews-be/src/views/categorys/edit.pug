@@ -1,0 +1,46 @@
+extends ../layouts/main.pug
+include ../layouts/partials/alert.pug
+
+block HEADER_CONTENT 
+    link(rel="stylesheet", href="/static/css/category.css")
+block content 
+    h2(class='content-title text-center') CHỈNH SỬA DANH MỤC
+    if msg
+        - var statusMsg = status ? 'success' : 'error';
+        +alert(msg,statusMsg)
+    form(class="form-create mt-4",method="POST",action=`/categorys/${category.id}/edit?_method=put&p=${p}&fposc=${fposc}&lposc=${lposc}`)
+        div(class="form-group")
+            label(for="name") Tên danh mục:
+            input(
+                type="text",
+                name="name",
+                id="name", 
+                class="form-control",
+                placeholder="Nhập vào tên danh mục",
+                value= category.ten
+            )
+            input(type="hidden",name="p",value=p)
+            input(type="hidden",name="fposc",value=fposc)
+            input(type="hidden",name="lposc",value=lposc)
+            if errors && errors[0] && errors[0].path === 'name'
+                p(class="text-danger ml-2")= errors[0].msg
+        div(class="form-group d-flex justify-content-start")
+            button(class="btn btn-primary form-button rounded-0",type="submit") Cập nhật
+            a(class="btn btn-secondary form-button rounded-0 ml-3",href=`/categorys?p=${p}&fposc=${fposc}&lposc=${lposc}`) Hủy bỏ
+block SCRIPT 
+    script.
+        $(document).ready(function(){
+            const eAlert = $('#alert');
+            if(eAlert){
+                const eBtnCloseAlert = $('#btn-close');
+                const timmer_id = setTimeout(()=>{
+                        eAlert.hide();
+                },5000); //5s
+                eBtnCloseAlert.click(() => {
+                eAlert.hide();
+                clearTimeout(timmer_id);
+                })
+             }
+        });
+
+                

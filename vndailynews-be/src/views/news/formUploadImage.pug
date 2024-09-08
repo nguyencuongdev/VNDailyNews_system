@@ -1,0 +1,25 @@
+mixin formUploadImage()
+    form(class="form-upload-img d-none justify-content-center align-items-center" id="form-upload-img")
+            div(class="form-img-overlay")
+            div(class="form-img-container p-4")
+                h4(class="text-primary text-center mb-5") TẢI HỈNH ẢNH LÊN
+                    button(class="form-upload-btn-close" id="btn-close-form-uploadImg" type="button") 
+                        svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2")
+                            rect(height="18" rx="2" ry="2" width="18" x="3" y="3")
+                            line(x1="9" x2="15" y1="9" y2="15")
+                            line(x1="15" x2="9" y1="9" y2="15")
+                div(class="form-group")
+                    label(class="form-label" for="fileName") Tên của hình ảnh: 
+                    input(class="form-control" placeholder="Nhập vào tên ảnh" id="fileName" type="text")
+                    p(class="text-danger my-1 message pl-2")
+                div(class="form-group d-flex justify-content-center" id="fileUpload")
+                    div(class="nofile-container border p-4 d-flex flex-column align-items-center justify-content-center w-100" id="nofile-container")
+                        img(src="/static/imgs/no_image2.png", alt="Ảnh trống", srcset="")
+                        h6(class="text-center text-secondary mt-2") Nhấp vô đây để chọn tệp tải lên!
+                        p(class="text-danger my-1 message pl-2")
+                    div(class="file-container d-none" id="file-container")
+                        img(src="", alt="ảnh đại diện bài đăng", srcset="")
+                    input(type="file" class="d-none" accept="image/png, image/jpeg, image/gif, image/webp")
+                div(class="form-group d-flex justify-content-center")
+                    button(type="submit" class="btn btn-primary mx-3 btn-upload-img form-upload-btn" id="btn-complate-uploadImg") Xong
+                    button(class="btn btn-secondary mx-3 btn-unupload-img form-upload-btn" id="btn-cancel-form-uploadImg" type="button") Hủy bỏ

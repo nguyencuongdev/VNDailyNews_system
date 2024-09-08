@@ -1,0 +1,29 @@
+mixin header(user) 
+    header(class='header border-bottom d-flex justify-content-between align-items-center px-4')
+                div(class='header-brand')
+                    a(href="http://localhost:3000/") 
+                        img(src="/static/imgs/Logo_VNDailyNews.png", alt="logo")
+                if user
+                    div(class="header-account dropdown")
+                        button(class='dropdown-toggle bg-white d-flex align-items-center px-2',
+                        type="button",
+                        data-toggle="dropdown",
+                        aria-haspopup="true",
+                        aria-expanded="false") 
+                            span(class="mr-2 d-inline-block")
+                                svg(xmlns="http://www.w3.org/2000/svg", 
+                                viewBox="0 0 24 24",
+                                width="24" height="24",
+                                class="main-grid-item-icon",
+                                fill="none",
+                                stroke="currentColor",
+                                stroke-linecap="round",
+                                stroke-linejoin="round",
+                                stroke-width="2")
+                                    path(d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2")
+                                    circle(cx="12",cy="7",r="4") 
+                            | Chào, #{user.tenhienthi}
+                        div(class="dropdown-menu dropdown-menu-right mt-2")
+                            a(class="dropdown-item",href="http://localhost:3000") Thông tin tài khoản
+                            a(class="dropdown-item",href="http://localhost:3000") Chuyển đến trang tin tức
+                            a(class="dropdown-item",href="/logout") Đăng xuất

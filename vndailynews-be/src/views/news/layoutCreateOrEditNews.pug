@@ -1,0 +1,183 @@
+include ../layouts/partials/alert.pug
+include formUploadImage.pug
+include formUploadVideo.pug
+include formUploadAudio.pug
+include actionsInContentDetail.pug
+
+mixin layoutCreateOrEditNews(isCreate, headerTitle, p, fposc, lposc)
+        h2(class="content-title text-center")= headerTitle
+        if isCreate
+            div(id="alert-success" class="d-none")
+                +alert('Đăng tải bài đăng thành công!','success')
+            div(id="alert-error" class="d-none")
+                +alert('Đăng tải bài đăng thất bại!','error')
+        else 
+            div(id="alert-success" class="d-none")
+                +alert('Cập nhật bài đăng thành công!','success')
+            div(id="alert-error" class="d-none")
+                +alert('Cập nhật bài đăng thất bại!','error')
+        form(class="content-container container-fluid mt-4")
+            div(class="row") 
+                div(class="col-lg-9 pl-0 pr-2")
+                    div(class="content-item border p-3")
+                        div(class="content-group form-group" id="content-title")
+                            label(class="form-label content-item-label") Tiêu đề:
+                            input(class="form-control rounded-0 content-control", placeholder="Nhập vào tiêu đề bài đăng", 
+                            name="title" value=title)
+                            p(class="text-danger my-1 message pl-2")
+                        div(class="content-group form-group" id="content-summary")
+                            label(class="form-label content-item-label") Nội dung tóm tắt:
+                            textarea(class="form-control rounded-0 content-control content-content_textarea", placeholder="Nhập vào nội dung tóm tắt của bài đăng", name="summary")= summary
+                            p(class="text-danger my-1 message pl-2")
+                        div(class="content-group form-group" id="content_detail-group")
+                            h5(class="content-item-label") Nội dung chi tiết của bài đăng:
+                            p(class="text-danger my-1 message pl-2")
+                            div(class="content-detail-container border p-3" id="content_detail")
+                                //- Hiển thị nội dung chi tiết của bài đăng;
+                                if contentDetail.length > 0
+                                    - var index = 0;
+                                    each content in contentDetail
+                                        case content.type 
+                                            when "title default"
+                                            when "title italic"
+                                            when "title bold"
+                                                div(class="content-detail-item mb-3" 
+                                                    data-type=content.type 
+                                                    data-target=index
+                                                )
+                                                    input(class="form-control rounded-0 content-control" class=(content.type === 'title italic' ? 'control-italic' : content.type === 'title bold' ? 'control-bold' : '')
+                                                    placeholder="Nhập vào tiêu đề của đoạn văn" value=content.value)
+                                                    button(class="btn-detailItem-delete" type="button" onClick="handleDeleteContentDetailItem(event)")
+                                                        svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2")
+                                                            polyline(points="3 6 5 6 21 6")
+                                                            path(d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2")
+                                                    p(class="text-danger my-1 message pl-2")
+                                            when "text default"
+                                            when "text italic"
+                                            when "text bold"
+                                                div(class="content-detail-item mb-3" 
+                                                    data-type=content.type
+                                                    data-target=index
+                                                )
+                                                    textarea(class="form-control rounded-0 content-control content-content_textarea", class=(content.type === 'text italic' ? 'control-italic' : content.type === 'text bold' ? 'control-bold' : '')
+                                                    placeholder="Nhập vào một đoạn văn")= content.value
+                                                    button(class="btn-detailItem-delete" type="button" onClick="handleDeleteContentDetailItem(event)")
+                                                        svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2")
+                                                            polyline(points="3 6 5 6 21 6")
+                                                            path(d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2")
+                                                    p(class="text-danger my-1 message pl-2")
+                                            when "image"
+                                                div(class="content-detail-item content-detail-image mb-3" 
+                                                    data-type=content.type
+                                                    data-target=index
+                                                )
+                                                    img(src=content.src, alt="hình ảnh", srcset="")
+                                                    h5(class="text-center mt-2 content-detail-img-title name-image")=content.name
+                                                    button(class="btn-detailItem-delete" type="button" onClick="handleDeleteContentDetailItem(event)")
+                                                        svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2")
+                                                            polyline(points="3 6 5 6 21 6")
+                                                            path(d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2")
+                                                    button(class="btn-detailItem-edit" type="button" onClick="handleChangeFileMediaUploaded(event,'image')")
+                                                        svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2")
+                                                            path(d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7")
+                                                            path(d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z")
+                                                    if !isCreate
+                                                        span(data-src="noChange" class="check-change")  
+                                                    input(type="file" class="d-none" accept=".png, .jpg, .jpeg" isCreate=(isCreate ? 'yes' : 'no'))
+                                            when "video"
+                                                div(class="content-detail-item content-detail-video mb-3" 
+                                                    data-type=content.type
+                                                    data-target=index
+                                                )
+                                                    video(width="100%" height="auto" controls src=content.src)
+                                                    h5(class="text-center mt-2 content-detail-img-title name-image")=content.name
+                                                    button(class="btn-detailItem-delete" type="button" onClick="handleDeleteContentDetailItem(event)")
+                                                        svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2")
+                                                            polyline(points="3 6 5 6 21 6")
+                                                            path(d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2")
+                                                    button(class="btn-detailItem-edit" type="button" onClick="handleChangeFileMediaUploaded(event,'video')")
+                                                        svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2")
+                                                            path(d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7")
+                                                            path(d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z")
+                                                    if !isCreate
+                                                        span(data-src="noChange" class="check-change")  
+                                                    input(type="file" class="d-none" accept=".png, .jpg, .jpeg" isCreate=(isCreate ? 'yes' : 'no'))
+                                            when "audio"
+                                                div(class="content-detail-item content-detail-audio mb-3" 
+                                                    data-type=content.type
+                                                    data-target=index
+                                                )
+                                                    audio(width="100%" height="auto" controls src=content.src)
+                                                    h5(class="text-center mt-2 content-detail-img-title name-image")=content.name
+                                                    button(class="btn-detailItem-delete" type="button" onClick="handleDeleteContentDetailItem(event)")
+                                                        svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2")
+                                                            polyline(points="3 6 5 6 21 6")
+                                                            path(d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2")
+                                                    button(class="btn-detailItem-edit" type="button" onClick="handleChangeFileMediaUploaded(event,'audio')")
+                                                        svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2")
+                                                            path(d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7")
+                                                            path(d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z")
+                                                    if !isCreate
+                                                        span(data-src="noChange" class="check-change")  
+                                                    input(type="file" class="d-none" accept=".png, .jpg, .jpeg" isCreate=(isCreate ? 'yes' : 'no'))
+                                            when "richtext"
+                                                div(class="content-detail-item content-detail-richtext mb-3" 
+                                                    data-type=content.type
+                                                    data-target=index
+                                                )   
+                                                    textarea(id=(`content-richtext${index}`)) 
+                                                    div(class="d-none" id=`content-richtext-value${index}`)
+                                                        != content.value
+                                                    button(class="btn-detailItem-delete" type="button" onClick="handleDeleteContentDetailItem(event)")
+                                                        svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2")
+                                                            polyline(points="3 6 5 6 21 6")
+                                                            path(d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2")
+                                                    p(class="text-danger my-1 message pl-2")
+                                        - index = index + 1;
+                            if !isCreate
+                                input(type="hidden" value=contentDetail.length id="lengthCotentDetail")
+                            div(class="d-flex justify-content-center content-item content-functions")
+                                +actionContenDetail
+                div(class="col-lg-3 pr-0 pl-2")     
+                    div(class="border content-item p-3 mb-3")
+                        div(class="form-group" id="content-avatar")
+                            label(class="font-label") Ảnh đại diện:
+                            div(class="content-avatar-unupload p-3 bg-secondary text-center" id="avatar-noupload" 
+                            class=(avatar && "d-none"))
+                                img(src="/static/imgs/no_image.png", alt="no-avatar", srcset="")
+                                h6(class="text-center text-white content-avatar-note") Click vào để tải ảnh lên!
+                            div(class="content-avatar-uploaded text-left" id="avatar-uploaded" class=(!avatar && "d-none"))
+                                img(src=(avatar ? avatar : ''), alt="avatar", srcset="")
+                                button(class="btn-avatar-delete" type="button" id="btn-avatar-delete")
+                                        svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2")
+                                            polyline(points="3 6 5 6 21 6")
+                                            path(d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2")
+                            if !isCreate
+                                span(data-src="noChange" id="check-changeAvatar") 
+                            input(type="file" class="d-none" accept="image/png, image/jpeg, image/gif,image/webp")
+                            p(class="text-danger my-1 message pl-2")
+                        div(class="form-group")
+                            div(class="content-tags mb-3" id="content-tags")
+                                label(class="font-label") Thể loại:
+                                select(
+                                    name="tags"
+                                    class="selectpicker form-control content-tags-select w-100 rounded-0"
+                                    title="Chọn thể loại"
+                                    multiple
+                                    data-live-search
+                                    data-size="6"
+                                )
+                                        //- Hiển thị các thể loại có trên hệ thống
+                                        each tag in tagList 
+                                            option(selected=tags.includes(tag.id) value=tag.id)= tag.ten + ' (' +tag.category.ten + ')'
+                                p(class="text-danger my-1 message pl-2")
+                        div(class="content-group d-flex justify-content-center mt-4 bg-transparent")
+                            if isCreate
+                                button(type="submit" class="btn btn-primary mx-1" id="btn-create-news") Đăng tải
+                            else
+                                button(type="submit" class="btn btn-primary mx-1" id="btn-edit-news") Cập nhật
+                            a(class="btn btn-secondary mx-1" href=`/news?p=${p}&fposc=${fposc}&lposc=${lposc}`) Hủy bỏ
+        +formUploadImage
+        +formUploadVideo
+        +formUploadAudio
+        

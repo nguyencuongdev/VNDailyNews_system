@@ -1,0 +1,11 @@
+mixin diabox(message)
+    div(class="diabox" id="diabox" style={
+        display: 'none'
+    })
+        div(class="diabox-overlay")
+        div(class="diabox-body p-4")
+            h4(class="diabox-title text-center mb-4") Thông báo 
+            p(class="diabox-message")= message
+            div(class="diabox-buttons d-flex justify-content-center mt-4")
+                button(class="btn btn-primary mr-1 w-50 rounded-0" id="btnAcceptDiabox") Có
+                button(class="btn btn-secondary ml-1 w-50 rounded-0" id="btnCancelDiabox") Không

@@ -1,0 +1,15 @@
+mixin alert(msg,status)
+    div#alert
+        div(class="alert mb-0 text-left content-alert",role="alert",
+        class={
+            'alert-primary': status === 'success',
+            'alert-warning': status === 'warning',
+            'alert-danger': status === 'error',
+            'alert-info': status === 'infor'
+        })= msg
+            <button type="button" class="close btn-close text-danger" id="btn-close" aria-label="Close">
+                svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2")
+                    circle(cx="12" cy="12" r="10")
+                    line(x1="15" x2="9" y1="9" y2="15")
+                    line(x1="9" x2="15" y1="9" y2="15")
+                    

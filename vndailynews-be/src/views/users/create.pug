@@ -1,0 +1,165 @@
+extends ../layouts/main.pug
+include ../layouts/partials/alert.pug
+
+block HEADER_CONTENT 
+    link(rel="stylesheet", href="/static/css/user.css")
+block content 
+    h2(class='content-title text-center') THÊM MỚI NGƯỜI DÙNG
+    if msg
+        - var statusMsg = status ? 'success' : 'error';
+        +alert(msg,statusMsg)
+    form(class="form-create mt-4 form-inline align-items-start mt-3",method="POST",action="/users/create")
+        div(class="form-group col-lg-3 pl-0 d-flex flex-column align-items-start mt-3 pr-3")
+            label(for="username" class="mb-2") Tên người dùng:
+            input(
+                type="text",
+                name="username",
+                id="username", 
+                class="form-control w-100 rounded-0",
+                placeholder="Nhập vào tên người dùng",
+                value=inforUserNew.username
+            )
+            if errors 
+                each error in errors 
+                    if error.path == 'username'
+                        p(class="text-danger ml-2 mt-2")=error.msg
+                        - break
+        div(class="form-group col-lg-3 pl-0 d-flex flex-column align-items-start mt-3 pr-3")
+            label(for="account" class="mb-2") Tên tài khoản:
+            input(
+                type="text",
+                name="account",
+                id="account", 
+                class="form-control w-100 rounded-0",
+                placeholder="Nhập vào tên tài khoản",
+                value=inforUserNew.account
+            )
+            if errors 
+                each error in errors 
+                    if error.path == 'account'
+                        p(class="text-danger ml-2 mt-2")=error.msg
+                        - break
+        div(class="form-group col-lg-3 pl-0 d-flex flex-column align-items-start mt-3 pr-3")
+            label(for="password" class="mb-2") Mật khẩu:
+            input(
+                type="text",
+                name="password",
+                id="password", 
+                class="form-control w-100 rounded-0",
+                placeholder="Nhập vào tên danh mục",
+                value=inforUserNew.password
+            )
+            if errors 
+                each error in errors 
+                    if error.path == 'password'
+                        p(class="text-danger ml-2 mt-2")=error.msg
+                        - break
+        div(class="form-group col-lg-3 pl-0 d-flex flex-column align-items-start mt-3 pr-3")
+            label(for="comfirmPassword" class="mb-2") Xác nhận mật khẩu:
+            input(
+                type="text",
+                name="comfirmPassword",
+                id="comfirmPassword", 
+                class="form-control w-100 rounded-0",
+                placeholder="Nhập vào tên danh mục",
+                value=inforUserNew.comfirmPassword
+            )
+            if errors 
+                    each error in errors 
+                        if error.path == 'comfirmPassword'
+                            p(class="text-danger ml-2 mt-2")=error.msg
+                            - break
+        div(class="form-group col-lg-3 pl-0 d-flex flex-column align-items-start mt-3 pr-3")
+            label(for="role" class="mb-2") Vai trò:
+            select(
+                id="role"
+                name="roleID"
+                class="selectpicker form-control w-100 rounded-0"
+                data-style="btn-primary"
+                title="Chọn vai trò"
+                data-live-search
+            )
+                each role in roles
+                    option(value=role.id selected=(role.id === inforUserNew.roleID))= role.ten
+            if errors 
+                each error in errors 
+                    if error.path == 'roleID'
+                        p(class="text-danger ml-2 mt-2")=error.msg
+                        - break
+        div(class="form-group col-lg-3 pl-0 d-flex flex-column align-items-start mt-3 pr-3")
+            label(for="email" class="mb-2") Email:
+            input(
+                type="email",
+                name="email",
+                id="email", 
+                class="form-control w-100 rounded-0",
+                placeholder="Nhập vào email",
+                value=inforUserNew.email
+            )
+            if errors 
+                each error in errors 
+                    if error.path == 'email'
+                        p(class="text-danger ml-2 mt-2")=error.msg
+                        - break
+        div(class="form-group col-lg-3 pl-0 d-flex flex-column align-items-start mt-3 pr-3")
+            label(for="phone" class="mb-2") SĐT:
+            input(
+                type="text",
+                name="phone",
+                id="phone", 
+                class="form-control w-100 rounded-0",
+                placeholder="+84",
+                value=inforUserNew.phone
+            )
+            if errors 
+                each error in errors 
+                    if error.path == 'phone'
+                        p(class="text-danger ml-2 mt-2")=error.msg
+                        - break
+        div(class="form-group col-lg-3 pl-0 d-flex flex-column align-items-start mt-3 pr-3")
+            label(for="status" class="mb-2") Trạng thái:
+            select(
+                id="status"
+                name="status"
+                class="selectpicker form-control w-100 rounded-0"
+                data-style="btn-primary"
+                title="Chọn trạng thái"
+            )
+                option(value=1 selected=(inforUserNew.status === true)) Hoạt động
+                option(value=0 selected=(inforUserNew.status === false)) Không hoạt động
+            if errors 
+                each error in errors 
+                    if error.path == 'status'
+                        p(class="text-danger ml-2 mt-2")=error.msg
+                        - break
+        div(class="form-group col-lg-12 pl-0 d-flex flex-column align-items-start mt-3 pr-3")
+            label(for="note" class="mb-2") Ghi chú:
+            textarea(
+                name="note",
+                id="note", 
+                class="form-control w-100 rounded-0",
+                placeholder="Nhập vào một đoạn ghi chú",
+            )=inforUserNew.note
+        div(class="form-group d-flex justify-content-start mt-4 col-lg-12 px-0")
+            div(class="d-flex col-lg-3 pl-0") 
+                button(class="btn btn-primary form-button rounded-0 w-50 ",type="submit") Tạo
+                a(class="btn btn-secondary form-button form-button-cancel rounded-0 ml-3 w-50 ",href=`/users?p=${p}&fposc=${fposc}&lposc=${lposc}`) Hủy bỏ
+block SCRIPT 
+    script.
+        $(document).ready(function(){
+            const eAlert = $('#alert');
+            $('.selectpicker').selectpicker();
+
+            if(eAlert){
+                const eBtnCloseAlert = $('#btn-close');
+                const timmer_id = setTimeout(()=>{
+                     eAlert.hide();
+                },5000); //5s
+                eBtnCloseAlert.click(() => {
+                eAlert.hide();
+                    clearTimeout(timmer_id);
+                })
+             }
+        });
+
+ 

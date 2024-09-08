@@ -1,0 +1,84 @@
+extends ./layouts/auth.pug
+block content
+        div(class='container-fluid register')
+            div(class='row')
+                div(class='col px-0')
+                    header(class='header d-flex justify-content-center py-3 border-bottom mb-3') 
+                        a(href="http://localhost:3000/") 
+                            img(src="/static/imgs/Logo_VNDailyNews.png", alt="Logo", class='header-brand')
+                    if msg
+                        - var statusMsg = status ? 'success' : 'error';
+                        +alert(msg,statusMsg)
+                    h2(class='form-register-title text-center') ĐĂNG KÝ
+                    form(class='form-register',method='POST',action='/register')
+                        div(class="form-group form-body")
+                            div(class='form-group mb-2')
+                                label(for='account') Tài khoản: 
+                                    span(class="text-danger") * 
+                                input(class='form-control',name='account',placeholder='Nhập vào tài khoản',id='account',autoComplete=off,value=account)
+                                if errors 
+                                    each error in errors 
+                                        if error.path == 'account'
+                                            p(class="text-danger message message ml-2 mt-2")=error.msg
+                                            - break
+                            div(class='mb-2 d-flex')
+                                div(class='col-lg-6 px-0 d-block pr-2')
+                                    label(for='#firstName') Họ đêm: 
+                                        span(class="text-danger") * 
+                                    input(class='form-control',name='firstName',placeholder='Nhập vào họ đệm',id='firstName',type='text',autoComplete=off,value=firstName)
+                                    if errors 
+                                    each error in errors 
+                                        if error.path == 'firstName'
+                                            p(class="text-danger message ml-2 mt-2")=error.msg
+                                            - break
+                                div(class="col-lg-6 px-0 pl-2")
+                                    label(for='#lastName') Tên: 
+                                        span(class="text-danger") * 
+                                    input(class='form-control',name='lastName',placeholder='Nhập vào tên',id='lastName',type='text',autoComplete=off,value=lastName)
+                                    if errors 
+                                        each error in errors 
+                                            if error.path == 'lastName'
+                                                p(class="text-danger message ml-2 mt-2")=error.msg
+                                                - break
+                            div(class='form-group mb-2')
+                                label(for='#email') Email: 
+                                    span(class="text-danger") * 
+                                input(class='form-control',name='email',placeholder='Nhập vào email',id='email',type='text',autoComplete=off,value=email)
+                                if errors 
+                                    each error in errors 
+                                        if error.path == 'email'
+                                            p(class="text-danger message ml-2 mt-2")=error.msg
+                                            - break 
+                            div(class='form-group mb-2')
+                                label(for='#phone') Số điện thoại: 
+                                    span(class="text-danger") * 
+                                input(class='form-control',name='phone',placeholder='Nhập vào email',id='phone',type='text',autoComplete=off,value=phone)
+                                if errors 
+                                    each error in errors 
+                                        if error.path == 'phone'
+                                            p(class="text-danger message ml-2 mt-2")=error.msg
+                                            - break                  
+                            div(class='form-group mb-2')
+                                label(for='#password') Mật khẩu: 
+                                    span(class="text-danger") * 
+                                input(class='form-control',name='password',placeholder='Nhập vào mật khẩu',id='password',type='password',autoComplete=off,value=password)
+                                if errors 
+                                    each error in errors 
+                                        if error.path == 'password'
+                                            p(class="text-danger message ml-2 mt-2")=error.msg
+                                            - break 
+                            div(class='form-group mb-2')
+                            label(for='#confirmPassword') Xác nhận mật khẩu: 
+                                span(class="text-danger") * 
+                            input(class='form-control',name='confirmPassword',placeholder='Nhập vào mật khẩu xác nhận',id='confirmPassword',type='password',autoComplete=off,value=confirmPassword)
+                            if errors 
+                                each error in errors 
+                                    if error.path == 'confirmPassword'
+                                        p(class="text-danger message ml-2 mt-2")=error.msg
+                                        - break 
+                            if message 
+                                 p(class='text-danger mt-2 ml-2')=message
+                        div(class="d-flex justify-content-end")
+                            a(href="/login" class="link-redirect") Bạn đã có tài khoản?
+                        div(class='form-group mt-4 d-flex justify-content-center')
+                            button(class='btn btn-primary btn-large form-btn text-white' type="submit") Đăng ký
