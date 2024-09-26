@@ -8,11 +8,16 @@ const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
 const methodOverride = require('method-override');
 const { database } = require('./utils');
+const helmet = require('helmet');
 dotenv.config();
 
 const app = express();
 const server = createServer(app);
 
+// sử dụng helmet để che dấu các công nghệ sử dụng.
+app.use(helmet({
+    contentSecurityPolicy: false
+}));
 
 // Thiết lập cors
 app.use(cors());
