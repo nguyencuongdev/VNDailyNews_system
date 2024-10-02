@@ -36,6 +36,7 @@ const createTagValidator = [isLogined, authRole, checkPermission,
             const errorsValidate = validationResult(req);
             if (!errorsValidate.isEmpty()) {
                 return res.status(403).render('tags/create.pug', {
+                    frontEndURL: process.env.FRONTENDURL,
                     user: req.user,
                     name: req.body.name,
                     categoryID: req.body.categoryID,
@@ -89,6 +90,7 @@ const editTagValidator = [isLogined, authRole, checkPermission,
             const errorsValidator = validationResult(req);
             if (!errorsValidator.isEmpty()) {
                 return res.status(403).render('tags/edit.pug', {
+                    frontEndURL: process.env.FRONTENDURL,
                     user: req.user,
                     path: '/tags',
                     status: false,

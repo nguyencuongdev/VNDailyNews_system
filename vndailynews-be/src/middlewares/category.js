@@ -36,6 +36,7 @@ const createCategoryValidator = [isLogined, authRole, checkPermission,
             const errorsValidator = validationResult(req);
             if (!errorsValidator.isEmpty()) {
                 return res.status(403).render('categorys/create.pug', {
+                    frontEndURL: process.env.FRONTENDURL,
                     user: req.user,
                     name: req.body.name,
                     path: '/categorys/create',
@@ -62,6 +63,7 @@ const showEditCategoryValidator = [
         const errorsValidator = validationResult(req);
         if (!errorsValidator.isEmpty()) {
             return res.status(403).render('categorys/edit.pug', {
+                frontEndURL: process.env.FRONTENDURL,
                 user: req.user,
                 path: '/categorys',
                 status: false,
@@ -82,6 +84,7 @@ const editCategoryValidator = [isLogined, authRole, checkPermission,
             const errorsValidator = validationResult(req);
             if (!errorsValidator.isEmpty()) {
                 return res.status(403).render('categorys/edit.pug', {
+                    frontEndURL: process.env.FRONTENDURL,
                     user: req.user,
                     path: '/categorys',
                     status: false,

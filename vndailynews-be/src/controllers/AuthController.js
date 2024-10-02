@@ -7,6 +7,7 @@ const { User } = require('../models');
 const authController = {
     async showForgotPassword(_, res) {
         return res.render('forgot-password.pug', {
+            frontEndURL: process.env.FRONTENDURL,
             account: '',
             email: '',
             errors: []
@@ -16,6 +17,7 @@ const authController = {
         const resultValidate = validationResult(req);
         if (!resultValidate.isEmpty()) {
             return res.render('forgot-password.pug', {
+                frontEndURL: process.env.FRONTENDURL,
                 account: req.body.account,
                 email: req.body.email,
                 errors: resultValidate.array()
@@ -31,11 +33,13 @@ const authController = {
 
         if (!user)
             return res.render('forgot-password.pug', {
+                frontEndURL: process.env.FRONTENDURL,
                 message: 'Tài khoản này không tồn tại!',
                 account: req.body.account,
                 email: req.body.email,
             });
         return res.render('change-password.pug', {
+            frontEndURL: process.env.FRONTENDURL,
             account: user.taikhoan,
             email: user.email,
             passwordNew: '',
@@ -46,6 +50,7 @@ const authController = {
         const resultValidate = validationResult(req);
         if (!resultValidate.isEmpty()) {
             return res.render('change-password.pug', {
+                frontEndURL: process.env.FRONTENDURL,
                 account: req.body.account,
                 email: req.body.email,
                 passwordNew: req.body.passwordNew,
@@ -64,6 +69,7 @@ const authController = {
                 }
             })
         return res.render('change-password.pug', {
+            frontEndURL: process.env.FRONTENDURL,
             msg: 'Thay đổi mật khẩu thành công!',
             status: true,
             errors: []
@@ -71,6 +77,7 @@ const authController = {
     },
     async showRegister(_, res) {
         return res.render('register.pug', {
+            frontEndURL: process.env.FRONTENDURL,
             account: '',
             firstName: '',
             lastName: '',
@@ -86,6 +93,7 @@ const authController = {
             const resultValidate = validationResult(req);
             if (!resultValidate.isEmpty()) {
                 return res.render('register.pug', {
+                    frontEndURL: process.env.FRONTENDURL,
                     account: req.body.account,
                     firstName: req.body.firstName,
                     lastName: req.body.lastName,
@@ -110,6 +118,7 @@ const authController = {
             });
             user.save();
             return res.render('register.pug', {
+                frontEndURL: process.env.FRONTENDURL,
                 msg: 'Đăng ký thành công!',
                 status: true,
                 errors: []
@@ -123,6 +132,7 @@ const authController = {
         jwt.verify(accessToken, process.env.JWT_SECRET_KEY, (err) => {
             if (err) {
                 return res.render('login.pug', {
+                    frontEndURL: process.env.FRONTENDURL,
                     account: '',
                     password: '',
                     errors: []
@@ -137,6 +147,7 @@ const authController = {
             const { account, password } = req.body;
             if (!resultValidate.isEmpty()) {
                 return res.render('login.pug', {
+                    frontEndURL: process.env.FRONTENDURL,
                     account: account,
                     password: password,
                     errors: resultValidate.array()
@@ -149,6 +160,7 @@ const authController = {
             });
             if (!user) {
                 return res.render('login.pug', {
+                    frontEndURL: process.env.FRONTENDURL,
                     account,
                     password,
                     message: 'Tài khoản của bạn không tồn tại!'
@@ -159,6 +171,7 @@ const authController = {
             if (user && comparePassword) {
                 if (!user.trangthai) {
                     return res.render('login.pug', {
+                        frontEndURL: process.env.FRONTENDURL,
                         account,
                         password,
                         message: 'Tài khoản của bạn đã bị khóa!'
@@ -179,6 +192,7 @@ const authController = {
                 return res.redirect('/news');
             }
             return res.render('login.pug', {
+                frontEndURL: process.env.FRONTENDURL,
                 account,
                 password,
                 message: 'Tài khoản hoặc mật khẩu không đúng!'

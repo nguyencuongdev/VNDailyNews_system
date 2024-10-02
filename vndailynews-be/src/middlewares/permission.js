@@ -33,6 +33,7 @@ const createPermissionValidator = [isLogined, authRole, checkPermission,
             const errorsValidator = validationResult(req);
             if (!errorsValidator.isEmpty()) {
                 return res.status(403).render('permissions/create.pug', {
+                    frontEndURL: process.env.FRONTENDURL,
                     user: req.user,
                     name: req.body.name,
                     note: req.body.note,
@@ -60,6 +61,7 @@ const showEditPermissionValidator = [
         const errorsValidator = validationResult(req);
         if (!errorsValidator.isEmpty()) {
             return res.status(403).render('permissions/edit.pug', {
+                frontEndURL: process.env.FRONTENDURL,
                 user: req.user,
                 path: '/permissions/edit',
                 status: false,
@@ -79,6 +81,7 @@ const editPermissionValidator = [isLogined, authRole, checkPermission,
             const errorsValidator = validationResult(req);
             if (!errorsValidator.isEmpty()) {
                 return res.status(403).render('permissions/edit.pug', {
+                    frontEndURL: process.env.FRONTENDURL,
                     user: req.user,
                     path: '/permissions/edit',
                     status: false,

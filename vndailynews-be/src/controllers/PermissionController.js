@@ -45,6 +45,7 @@ const PermissionController = {
             pagination = setPagination(req)
 
             res.render('permissions/index.pug', {
+                frontEndURL: process.env.FRONTENDURL,
                 user,
                 path: '/permissions',
                 p: pagination.currentPage,
@@ -63,6 +64,7 @@ const PermissionController = {
     showCreateNewPermission(req, res) {
         const user = req.user;
         res.render('permissions/create.pug', {
+            frontEndURL: process.env.FRONTENDURL,
             user,
             name: '',
             note: '',
@@ -80,6 +82,7 @@ const PermissionController = {
             });
             permission.save();
             return res.status(200).render('permissions/create.pug', {
+                frontEndURL: process.env.FRONTENDURL,
                 user: req.user,
                 name: '',
                 note: '',
@@ -106,6 +109,7 @@ const PermissionController = {
             })
 
             return res.render('permissions/edit.pug', {
+                frontEndURL: process.env.FRONTENDURL,
                 user,
                 path: '/permissions',
                 p: req.query.p,
@@ -128,6 +132,7 @@ const PermissionController = {
         });
 
         return res.status(200).render('permissions/edit.pug', {
+            frontEndURL: process.env.FRONTENDURL,
             user: req.user,
             path: '/permissions',
             p: req.query.p,

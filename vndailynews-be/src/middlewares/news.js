@@ -73,6 +73,7 @@ const createNewsValidator = [isLogined, authRole, checkPermission, createNewsUpl
         const errorsValidate = validationResult(req);
         if (!errorsValidate.isEmpty()) {
             return res.status(403).json({
+                frontEndURL: process.env.FRONTENDURL,
                 user: req.user,
                 title: req.body.title,
                 summary: req.body.summary,
@@ -175,6 +176,7 @@ const eidtNewsValidator = [isLogined, authRole, checkPermission, editNewsUploadF
 
         if (!errorsValidate.isEmpty()) {
             return res.status(403).json({
+                frontEndURL: process.env.FRONTENDURL,
                 user: req.user,
                 title: req.body.title,
                 summary: req.body.summary,

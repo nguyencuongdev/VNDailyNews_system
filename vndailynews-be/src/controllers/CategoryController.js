@@ -60,6 +60,7 @@ const CategoryController = {
             }
 
             res.render('categorys/index.pug', {
+                frontEndURL: process.env.FRONTENDURL,
                 user,
                 path: '/categorys',
                 p: currentPage,
@@ -78,6 +79,7 @@ const CategoryController = {
     showCreateCategory(req, res) {
         const user = req.user;
         res.render('categorys/create.pug', {
+            frontEndURL: process.env.FRONTENDURL,
             user,
             name: '',
             path: '/categorys/create',
@@ -93,6 +95,7 @@ const CategoryController = {
             });
             category.save();
             return res.status(200).render('categorys/create.pug', {
+                frontEndURL: process.env.FRONTENDURL,
                 user: req.user,
                 name: '',
                 status: true,
@@ -116,6 +119,7 @@ const CategoryController = {
                 }
             })
             return res.render('categorys/edit.pug', {
+                frontEndURL: process.env.FRONTENDURL,
                 user,
                 path: '/categorys',
                 p: req.query.p,
@@ -135,6 +139,7 @@ const CategoryController = {
         });
 
         return res.status(200).render('categorys/edit.pug', {
+            frontEndURL: process.env.FRONTENDURL,
             user: req.user,
             path: '/categorys',
             p: req.query.p,

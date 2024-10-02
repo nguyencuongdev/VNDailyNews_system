@@ -101,6 +101,7 @@ const TagController = {
             }
 
             res.render('tags/index.pug', {
+                frontEndURL: process.env.FRONTENDURL,
                 user,
                 path: '/tags',
                 p: currentPage,
@@ -121,6 +122,7 @@ const TagController = {
         const categoryList = await category.getCategorys();
         const user = req.user;
         res.render('tags/create.pug', {
+            frontEndURL: process.env.FRONTENDURL,
             user,
             name: '',
             categoryID: -1,
@@ -140,6 +142,7 @@ const TagController = {
             });
             tag.save();
             return res.status(200).render('tags/create.pug', {
+                frontEndURL: process.env.FRONTENDURL,
                 user: req.user,
                 name: '',
                 categoryID: -1,
@@ -174,6 +177,7 @@ const TagController = {
             })
             const categoryList = req.categoryList;
             res.render('tags/edit.pug', {
+                frontEndURL: process.env.FRONTENDURL,
                 user,
                 path: '/tags',
                 id: tag.id,
@@ -199,6 +203,7 @@ const TagController = {
             }
         });
         return res.status(200).render('tags/edit.pug', {
+            frontEndURL: process.env.FRONTENDURL,
             user: req.user,
             path: '/tags',
             p: req.query.p,
@@ -213,88 +218,88 @@ const TagController = {
         })
     },
     async handleDeleteTag(req, res) {
-        // try {
-        // lấy ra thông tin của các bài đăng thuộc thể loại để xem có xóa hay không ?
-        // danh sách id của bài đăng có thể loại thuộc
-        // nếu bài đăng thuộc mỗi thể loại đang xóa thì sẽ tiến hành xóa còn không sẽ chỉ gỡ thể loại khỏi bài đăng đó;
-        const newsIDListHasTag = await NewsTag.findAll({
-            attributes: ['baidang_id'],
-            where: {
-                theloai_id: +req.body.id
-            }
-        })
-        const newsIDListSelect = new Set();
-        newsIDListHasTag.forEach((item) => {
-            newsIDListSelect.add(item.baidang_id);
-        });
-        const newsListOfTag = await News.findAll({
-            attributes: ['id'],
-            include: [
-                {
-                    model: Tag,
-                    as: "tags",
-                    attributes: ['id'],
-                    through: {
-                        attributes: []
+        try {
+            // lấy ra thông tin của các bài đăng thuộc thể loại để xem có xóa hay không ?
+            // danh sách id của bài đăng có thể loại thuộc
+            // nếu bài đăng thuộc mỗi thể loại đang xóa thì sẽ tiến hành xóa còn không sẽ chỉ gỡ thể loại khỏi bài đăng đó;
+            const newsIDListHasTag = await NewsTag.findAll({
+                attributes: ['baidang_id'],
+                where: {
+                    theloai_id: +req.body.id
+                }
+            })
+            const newsIDListSelect = new Set();
+            newsIDListHasTag.forEach((item) => {
+                newsIDListSelect.add(item.baidang_id);
+            });
+            const newsListOfTag = await News.findAll({
+                attributes: ['id'],
+                include: [
+                    {
+                        model: Tag,
+                        as: "tags",
+                        attributes: ['id'],
+                        through: {
+                            attributes: []
+                        }
+                    }
+                ],
+                where: {
+                    id: {
+                        [Op.in]: Array.from(newsIDListSelect)
                     }
                 }
-            ],
-            where: {
-                id: {
-                    [Op.in]: Array.from(newsIDListSelect)
+            })
+            // Gỡ tag này khởi các bài đăng có liên kết
+            await NewsTag.destroy({
+                where: {
+                    theloai_id: +req.body.id
+                }
+            })
+
+            // xóa các bài đăng mà chỉ thuộc mỗi thể loại đang xóa.
+            for (let i = 0; i < newsListOfTag.length; i++) {
+                if (newsListOfTag[i].tags.length === 1) {
+                    News.destroy({
+                        where: {
+                            id: newsListOfTag[i].id
+                        }
+                    })
                 }
             }
-        })
-        // Gỡ tag này khởi các bài đăng có liên kết
-        await NewsTag.destroy({
-            where: {
-                theloai_id: +req.body.id
-            }
-        })
 
-        // xóa các bài đăng mà chỉ thuộc mỗi thể loại đang xóa.
-        for (let i = 0; i < newsListOfTag.length; i++) {
-            if (newsListOfTag[i].tags.length === 1) {
-                News.destroy({
-                    where: {
-                        id: newsListOfTag[i].id
-                    }
-                })
+            // Xóa tag
+            await Tag.destroy({
+                where: {
+                    id: +req.body.id
+                }
+            })
+
+            // Xử lý phân trang
+            let p = +req.query.p,
+                fposc = +req.query.fposc,
+                lposc = +req.query.lposc,
+                totalPerOnPage = +req.body.totalTagOnPage;
+            if (totalPerOnPage - 1 < 1 && p !== 0) {
+                p = p - 1;
             }
+
+            return res.status(200).json({
+                message: "Xóa danh mục thành công!",
+                statusCode: 200,
+                statusText: "success",
+                p,
+                fposc,
+                lposc
+            })
+
+        } catch (e) {
+            return res.status(403).json({
+                message: 'Thao tác đã xảy ra lỗi!',
+                statusCode: 500,
+                statusText: "error server"
+            })
         }
-
-        // Xóa tag
-        await Tag.destroy({
-            where: {
-                id: +req.body.id
-            }
-        })
-
-        // Xử lý phân trang
-        let p = +req.query.p,
-            fposc = +req.query.fposc,
-            lposc = +req.query.lposc,
-            totalPerOnPage = +req.body.totalTagOnPage;
-        if (totalPerOnPage - 1 < 1 && p !== 0) {
-            p = p - 1;
-        }
-
-        return res.status(200).json({
-            message: "Xóa danh mục thành công!",
-            statusCode: 200,
-            statusText: "success",
-            p,
-            fposc,
-            lposc
-        })
-
-        // } catch (e) {
-        //     return res.status(403).json({
-        //         message: 'Thao tác đã xảy ra lỗi!',
-        //         statusCode: 500,
-        //         statusText: "error server"
-        //     })
-        // }
     }
 }
 module.exports = TagController;

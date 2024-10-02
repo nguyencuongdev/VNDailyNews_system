@@ -147,6 +147,7 @@ const UserController = {
             }
 
             res.render('users/index.pug', {
+                frontEndURL: process.env.FRONTENDURL,
                 user,
                 path: '/users',
                 p: currentPage,
@@ -170,6 +171,7 @@ const UserController = {
         })
         const user = req.user;
         res.render('users/create.pug', {
+            frontEndURL: process.env.FRONTENDURL,
             user,
             inforUserNew: {
                 username: '',
@@ -207,6 +209,7 @@ const UserController = {
             });
             user.save();
             return res.status(201).render('users/create.pug', {
+                frontEndURL: process.env.FRONTENDURL,
                 user: req.user,
                 inforUserNew: {
                     username: '',
@@ -249,6 +252,7 @@ const UserController = {
         })
 
         res.render('users/edit.pug', {
+            frontEndURL: process.env.FRONTENDURL,
             user,
             inforUser: {
                 id,
@@ -277,6 +281,7 @@ const UserController = {
             const errorsValidator = validationResult(req);
             if (!errorsValidator.isEmpty()) {
                 return res.status(403).render('users/edit.pug', {
+                    frontEndURL: process.env.FRONTENDURL,
                     user: req.user,
                     inforUser: {
                         id,

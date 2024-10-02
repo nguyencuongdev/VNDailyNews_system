@@ -142,6 +142,7 @@ const NewsController = {
             pagination = setPagination(req);
 
             return res.render('news/index.pug', {
+                frontEndURL: process.env.FRONTENDURL,
                 user,
                 path: '/news',
                 p: pagination.currentPage,
@@ -173,6 +174,7 @@ const NewsController = {
             })
             const user = req.user;
             return res.render('news/create.pug', {
+                frontEndURL: process.env.FRONTENDURL,
                 user,
                 title: '',
                 summary: '',
@@ -265,8 +267,21 @@ const NewsController = {
                 tagsOfNews.push(newstag.theloai_id);
             });
             const contentDetail = JSON.parse(news.noidungchitiet);
-
+            return res.json({
+                frontEndURL: process.env.FRONTENDURL,
+                user,
+                tagList,
+                title: news.tieude,
+                summary: news.noidungtomtat,
+                contentDetail,
+                tags: tagsOfNews,
+                avatar: news.anhdaidien,
+                path: 'news/edit',
+                status: true,
+                p, fposc, lposc
+            })
             return res.render('news/edit.pug', {
+                frontEndURL: process.env.FRONTENDURL,
                 user,
                 tagList,
                 title: news.tieude,
@@ -442,6 +457,7 @@ const NewsController = {
 
             const contentDetail = JSON.parse(news.noidungchitiet);
             return res.render('news/inforDetail.pug', {
+                frontEndURL: process.env.FRONTENDURL,
                 user,
                 id: news.id,
                 title: news.tieude,

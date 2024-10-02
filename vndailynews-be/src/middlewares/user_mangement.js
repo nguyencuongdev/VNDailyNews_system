@@ -40,6 +40,7 @@ const createUserValidator = [isLogined, authRole, checkPermission,
 
             if (!errorsValidator.isEmpty()) {
                 return res.status(403).render('users/create.pug', {
+                    frontEndURL: process.env.FRONTENDURL,
                     user: req.user,
                     inforUserNew: {
                         username: req.body.username,
@@ -98,6 +99,7 @@ const editUserValidator = [isLogined, authRole, checkPermission,
             const errorsValidator = validationResult(req);
             if (!errorsValidator.isEmpty()) {
                 return res.status(403).render('users/edit.pug', {
+                    frontEndURL: process.env.FRONTENDURL,
                     user: req.user,
                     inforUser: {
                         id: req.params.id,

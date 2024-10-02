@@ -65,6 +65,7 @@ const RoleController = {
             // Xử lý change component phân trang
             pagination = setPagination(req);
             return res.render('roles/index.pug', {
+                frontEndURL: process.env.FRONTENDURL,
                 user,
                 path: '/roles',
                 p: pagination.currentPage,
@@ -84,6 +85,7 @@ const RoleController = {
         const permissionList = await Permission.findAll();
         const user = req.user;
         res.render('roles/create.pug', {
+            frontEndURL: process.env.FRONTENDURL,
             user,
             name: '',
             permissionID: -1,
@@ -105,6 +107,7 @@ const RoleController = {
             });
             role.save();
             return res.status(200).render('roles/create.pug', {
+                frontEndURL: process.env.FRONTENDURL,
                 user: req.user,
                 name: '',
                 note: '',
@@ -140,6 +143,7 @@ const RoleController = {
             })
             const permissionList = req.permissionList;
             res.render('roles/edit.pug', {
+                frontEndURL: process.env.FRONTENDURL,
                 user,
                 path: '/roles',
                 id: role.id,
@@ -167,6 +171,7 @@ const RoleController = {
             }
         });
         return res.status(200).render('roles/edit.pug', {
+            frontEndURL: process.env.FRONTENDURL,
             user: req.user,
             path: '/roles/edit',
             p: req.query.p,

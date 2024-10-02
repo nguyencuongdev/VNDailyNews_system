@@ -35,6 +35,7 @@ const createRoleValidator = [isLogined, authRole, checkPermission,
 
             if (!errorsValidate.isEmpty()) {
                 return res.status(403).render('roles/create.pug', {
+                    frontEndURL: process.env.FRONTENDURL,
                     user: req.user,
                     name: req.body.name,
                     permissionID: req.body.permissionID,
@@ -84,6 +85,7 @@ const editRoleValidator = [isLogined, authRole, checkPermission,
             const errorsValidator = validationResult(req);
             if (!errorsValidator.isEmpty()) {
                 return res.status(403).render('roles/edit.pug', {
+                    frontEndURL: process.env.FRONTENDURL,
                     user: req.user,
                     path: '/roles',
                     status: false,
