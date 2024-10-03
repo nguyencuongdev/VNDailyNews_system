@@ -26,17 +26,19 @@ app.use(cors());
 app.use(methodOverride('_method'));
 
 // Sử dụng morgan để ghi log vào folder /logs
-// Tạo một stream ghi file
-const accessLogStream = fs.createWriteStream(path.join(__dirname, 'logs/access.txt'), { flags: 'a' });
-const errorLogStream = fs.createWriteStream(path.join(__dirname, 'logs/errors.txt'), { flags: 'a' });
-app.use(morgan('dev', {
-    skip: function (_, res) { return res.statusCode < 400 },
-    stream: accessLogStream
-}));
-app.use(morgan('dev', {
-    skip: function (_, res) { return res.statusCode >= 400 },
-    stream: errorLogStream
-}));
+if (process.env.NODE_ENV === 'development') {
+    // Tạo một stream ghi file
+    const accessLogStream = fs.createWriteStream(path.join(__dirname, 'logs/access.txt'), { flags: 'a' });
+    const errorLogStream = fs.createWriteStream(path.join(__dirname, 'logs/errors.txt'), { flags: 'a' });
+    app.use(morgan('dev', {
+        skip: function (_, res) { return res.statusCode < 400 },
+        stream: accessLogStream
+    }));
+    app.use(morgan('dev', {
+        skip: function (_, res) { return res.statusCode >= 400 },
+        stream: errorLogStream
+    }));
+}
 
 // Thiết lập app nhận cookie, json, urlencode form gửi lên từ client->server;
 app.use(cookieParser());

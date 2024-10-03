@@ -267,19 +267,6 @@ const NewsController = {
                 tagsOfNews.push(newstag.theloai_id);
             });
             const contentDetail = JSON.parse(news.noidungchitiet);
-            return res.json({
-                frontEndURL: process.env.FRONTENDURL,
-                user,
-                tagList,
-                title: news.tieude,
-                summary: news.noidungtomtat,
-                contentDetail,
-                tags: tagsOfNews,
-                avatar: news.anhdaidien,
-                path: 'news/edit',
-                status: true,
-                p, fposc, lposc
-            })
             return res.render('news/edit.pug', {
                 frontEndURL: process.env.FRONTENDURL,
                 user,
