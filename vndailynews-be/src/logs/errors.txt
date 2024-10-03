@@ -67,3 +67,16 @@
 [0mGET /api/v1/categorys [36m304[0m 13.572 ms - -[0m
 [0mGET /api/v1/news/propose?limit=10 [36m304[0m 9.293 ms - -[0m
 [0mGET /api/v1/dashboard-news?page=1&limit=10 [36m304[0m 55.248 ms - -[0m
+[0mGET / [36m302[0m 15.177 ms - 34[0m
+[0mGET /news [32m200[0m 5658.441 ms - 44339[0m
+[0mGET /bootstrap/css/bootstrap.min.css [36m304[0m 3.339 ms - -[0m
+[0mGET /photoswipe/css/photoswipe.css [36m304[0m 5.046 ms - -[0m
+[0mGET /froala-editor/css/froala_editor.pkgd.min.css [36m304[0m 5.175 ms - -[0m
+[0mGET /jquery/jquery.min.js [36m304[0m 4.029 ms - -[0m
+[0mGET /static/css/news.css [36m304[0m 4.046 ms - -[0m
+[0mGET /static/css/base.css [36m304[0m 3.807 ms - -[0m
+[0mGET /static/css/style.css [36m304[0m 3.685 ms - -[0m
+[0mGET /static/imgs/Logo_VNDailyNews.png [36m304[0m 0.786 ms - -[0m
+[0mGET /bootstrap/js/bootstrap.min.js [36m304[0m 3.045 ms - -[0m
+[0mGET /popperjs/popper.js [36m304[0m 13.672 ms - -[0m
+[0mGET /froala-editor/js/froala_editor.pkgd.min.js [36m304[0m 12.262 ms - -[0m

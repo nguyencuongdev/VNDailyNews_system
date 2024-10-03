@@ -4,8 +4,13 @@
   "description": "",
   "main": "src/app.js",
   "scripts": {
-    "start": "nodemon --inspect src/app.js",
+    "dev": "nodemon --inspect src/app.js",
+    "build": "npm install && node src/app.js",
+    "start": "node  src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": "20.x"
   },
   "author": "cdev",
   "license": "ISC",
